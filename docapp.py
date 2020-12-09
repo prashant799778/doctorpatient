@@ -322,11 +322,16 @@ def doctorProfile():
 def PatientSignup():
     try:
         
-        inputdata = request.form()
+        inputdata = request.form.get('userID')
+        
+        print(inputdata)
+        
+        
         
         if inputdata== None or '':
              output = {"status":"false","message":"userID not defined","result":""}
              return output
+        
         startlimit,endlimit="",""
         keyarr = ['userID','name','email','phoneNumber','gender','age','dob','address','pincode','first','healthIssue']
         
