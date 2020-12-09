@@ -31,7 +31,7 @@ def doctorSignup():
     try:
         inputdata =  commonfile.DecodeInputdata(request.get_data()) 
         startlimit,endlimit="",""
-        keyarr = ['userID','name']
+        keyarr = ['userID','name','password','email','qualification,'age','experience','previously']
        
         msg = commonfile.CheckKeyNameBlankValue(keyarr,inputdata)
        
@@ -312,7 +312,7 @@ def PatientSignup():
     try:
         inputdata =  commonfile.DecodeInputdata(request.get_data()) 
         startlimit,endlimit="",""
-        keyarr = ['userID','name']
+        keyarr = ['userID','name','email','phoneNumber','gender','age','dob','address','pincode','first','healthIssue']
        
         msg = commonfile.CheckKeyNameBlankValue(keyarr,inputdata)
        
