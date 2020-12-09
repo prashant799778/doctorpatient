@@ -1004,7 +1004,7 @@ def agedropdown():
 
 if __name__ == "__main__":
    
-    app.run(host='0.0.0.1',port=5034,debug=True)
+    app.run(host='localhost',port=5034,debug=True)
 
 
 
