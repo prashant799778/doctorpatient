@@ -1,0 +1,17 @@
+
+import pymysql
+
+def DBconnection():
+    mysqlcon = pymysql.connect(host='localhost',
+                                user='root',
+                                password='',
+                                db='ent',
+                                charset='utf8mb4',
+                                cursorclass=pymysql.cursors.DictCursor)
+
+
+    return mysqlcon
+
+
+
+ 
