@@ -30,8 +30,11 @@ app.config['SECRET_KEY'] = 'secret!'
 def doctorSignup():
     try:
         inputdata =  commonfile.DecodeInputdata(request.get_data()) 
-        if inputdata== None or '':
-             output = {"status":"false","message":"userID not defined","result":""}
+        
+        print(inputdata)
+        
+        if inputdata== '':
+             output = {"status":"false","message":"us not defined","result":""}
              return output
         
         startlimit,endlimit="",""
