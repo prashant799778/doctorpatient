@@ -321,8 +321,7 @@ def doctorProfile():
 @app.route('/PatientSignup', methods=['POST'])
 def PatientSignup():
     try:
-        
-         inputdata= request.form('userID')
+        inputdata= request.form('userID')
         
         print(inputdata)
         
