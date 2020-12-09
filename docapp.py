@@ -30,14 +30,16 @@ app.config['SECRET_KEY'] = 'secret!'
 def doctorSignup():
     try:
         inputdata =  commonfile.DecodeInputdata(request.get_data()) 
+        if inputdata== None or '':
+             output = {"status":"false","message":"userID not defined","result":""}
+             return output
+        
         startlimit,endlimit="",""
         keyarr = ['userID','name','password','email','qualification','age','experience','previously']
        
         msg = commonfile.CheckKeyNameBlankValue(keyarr,inputdata)
         
-        if inputdata== None or '':
-             output = {"status":"false","message":"userID not defined","result":""}
-             return output
+       
 
             
        
@@ -317,16 +319,15 @@ def doctorProfile():
 def PatientSignup():
     try:
         inputdata =  commonfile.DecodeInputdata(request.get_data()) 
+        if inputdata== None or '':
+             output = {"status":"false","message":"userID not defined","result":""}
+             return output
         startlimit,endlimit="",""
         keyarr = ['userID','name','email','phoneNumber','gender','age','dob','address','pincode','first','healthIssue']
         
        
         msg = commonfile.CheckKeyNameBlankValue(keyarr,inputdata)
         
-        if inputdata== None or '':
-             output = {"status":"false","message":"userID not defined","result":""}
-             return output
-
        
         if msg == "1":
             
