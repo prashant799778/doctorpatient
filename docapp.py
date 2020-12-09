@@ -321,7 +321,9 @@ def doctorProfile():
 @app.route('/PatientSignup', methods=['POST'])
 def PatientSignup():
     try:
-        inputdata =  commonfile.DecodeInputdata(request.get_data()) 
+        
+        inputdata = request.form.get()
+        
         if inputdata== None or '':
              output = {"status":"false","message":"userID not defined","result":""}
              return output
