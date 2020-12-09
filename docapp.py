@@ -322,7 +322,7 @@ def doctorProfile():
 def PatientSignup():
     try:
         
-        inputdata = request.form.get()
+        inputdata = request.form()
         
         if inputdata== None or '':
              output = {"status":"false","message":"userID not defined","result":""}
@@ -1022,7 +1022,7 @@ def agedropdown():
 
 if __name__ == "__main__":
    
-    app.run(host='134.209.154.179',port=5037,debug=True)
+    app.run(host='134.209.154.179',port=5028,debug=True)
 
 
 
