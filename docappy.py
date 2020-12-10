@@ -323,7 +323,7 @@ def PatientSignup():
     try:
         
         
-        iF 'userID' in request.form:
+        if 'userID' in request.form:
             print('ww')
         print(inputdata)
         
