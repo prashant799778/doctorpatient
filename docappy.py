@@ -325,7 +325,7 @@ def PatientSignup():
 
         unfilled_data=[]
 
-        keyarr = ['userID','name','email','phoneNumber','gender','age','dob','address','pincode','first','healthIssue']
+        keyarr = ['userID','name','email','phoneNumber','gender','age','dob','address','pincode','first','healthIssue','password']
         
         for i in keyarr:
             if i not in request.form:
@@ -349,26 +349,27 @@ def PatientSignup():
         else:
 
             column,values="",""
+            for i in keyarr:
             
             
-            userID=request.form.get('userID')
-            print(userID)
+                userID=request.form.get('userID')
+                
 
-            name=request.form["name"]
-            print(name)
+                name=request.form["name"]
             
-            email=request.form['email']
-            phoneNumber=request.form["phoneNumber"]
+                
+                email=request.form['email']
+                phoneNumber=request.form["phoneNumber"]
 
-            password=request.form['password']
-            gender=request.form['gender']
-            age=request.form['age']
+                password=request.form['password']
+                gender=request.form['gender']
+                age=request.form['age']
 
-            dob=request.form['dob']
-            address=request.form['address']
-            pincode=request.form['pincode']
-            first=request.form['first']
-            healthIssue=request.form['healthIssue']
+                dob=request.form['dob']
+                address=request.form['address']
+                pincode=request.form['pincode']
+                first=request.form['first']
+                healthIssue=request.form['healthIssue']
             
           
             
