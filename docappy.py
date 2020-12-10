@@ -501,7 +501,7 @@ def patientlogin():
             loginuser=databasefile.SelectQuery1("patientMaster",column,whereCondition)
             print(session,'session')
             session.permanent = True
-            app.permanent_session_lifetime = timedelta(minutes=1)
+            app.permanent_session_lifetime = timedelta(minutes=3)
             print(app.permanent_session_lifetime)
 
             
