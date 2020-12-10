@@ -321,11 +321,13 @@ def doctorProfile():
 @app.route('/PatientSignup', methods=['POST'])
 def PatientSignup():
     try:
+        print(request.form)
         
         
-        if 'userID' in request.form:
-            print('ww')
-        print(inputdata)
+        for i in request.form:
+            print("ee")
+            
+      
         
         
         
@@ -1036,7 +1038,7 @@ def agedropdown():
 
 if __name__ == "__main__":
    
-    app.run(host='134.209.154.179',port=5068,debug=True)
+    app.run(host='134.209.154.179',port=5073,debug=True)
 
 
 
