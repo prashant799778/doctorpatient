@@ -45,7 +45,7 @@ app.config['SECRET_KEY'] = 'secret!'
 def doctorSignup():
     try:
         unfilled_data=[]
-        keyarr = ['userID','name','password','email','qualification','age','experience','previously']
+        keyarr = ['userID','name','password','email','qualification','age','experience','previously','speciality']
         for i in keyarr:
             if i not in request.form:
                 unfilled_data.append(i)
