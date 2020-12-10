@@ -343,33 +343,9 @@ def PatientSignup():
                 h.update({i:""+str(i)+""+" is required"})
             
             data={'status':'false','message':"Incomplete data",'result':h}
+            return data
+        
         else:
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        
-        
-       
-            
-      
-        
-        
-        
-        
-        
-            
-            
             column,values="",""
             print(inputdata)
 
@@ -480,8 +456,7 @@ def PatientSignup():
                 else:
                     return commonfile.Errormessage()
                         
-        else:
-            return msg 
+        
     except Exception as e :
         print("Exception---->" +str(e))           
         output = {"status":"false","message":"something went wrong","result":""}
@@ -1056,7 +1031,7 @@ def agedropdown():
 
 if __name__ == "__main__":
    
-    app.run(host='134.209.154.179',port=5039,debug=True)
+    app.run(host='134.209.154.179',port=5030,debug=True)
 
 
 
