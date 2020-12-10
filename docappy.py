@@ -23,7 +23,7 @@ from flask import session
 
 
 from flask import Flask, render_template
-from flask_login import LoginManager, login_require, login_user, logout_user
+from flask_login import LoginManager, login_user, logout_user
 
 
 
