@@ -189,6 +189,9 @@ def doctorlogin():
             
 
             if (loginuser['status']!='false'):
+                session.permanent = True
+                app.permanent_session_lifetime = timedelta(minutes=3)
+                print(app.permanent_session_lifetime)
                 return loginuser
           
 
@@ -545,6 +548,9 @@ def patientlogin():
 
             
             if (loginuser['status']!='false'):
+                session.permanent = True
+                app.permanent_session_lifetime = timedelta(minutes=3)
+                print(app.permanent_session_lifetime)
 
                 return loginuser
           
