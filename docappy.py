@@ -21,8 +21,22 @@ from flask import session
 
 
 
+
 from flask import Flask, render_template
-app = Flask(__name__)
+from flask_login import LoginManager, login_require, login_user, logout_user
+
+
+
+app = Flask(__name__) 
+
+
+
+login_mgr = LoginManager(app)
+login_mgr.login_view = 'login'
+login_mgr.refresh_view = 'relogin'
+login_mgr.needs_refresh_message = (u"Session time-out, please re-login")
+login_mgr.needs_refresh_message_category = "info"
+
 app.config['SECRET_KEY'] = 'secret!'
 
 
