@@ -43,7 +43,8 @@ app.config['SECRET_KEY'] = 'secret!'
 
 @app.route('/doctorSignup', methods=['POST'])
 def doctorSignup():
-    try:unfilled_data=[]
+    try:
+        unfilled_data=[]
         keyarr = ['userID','name','password','email','qualification','age','experience','previously']
         for i in keyarr:
             if i not in request.form:
