@@ -323,7 +323,8 @@ def PatientSignup():
     try:
         
         
-        inputdata=  commonfile.DecodeInputdata(request.get_data())
+        iF 'userID' in request.form:
+            print('ww')
         print(inputdata)
         
         
