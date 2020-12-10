@@ -501,7 +501,8 @@ def patientlogin():
             loginuser=databasefile.SelectQuery1("patientMaster",column,whereCondition)
             print(session,'session')
             session.permanent = True
-            app.permanent_session_lifetime = timedelta(minutes=5)
+            app.permanent_session_lifetime = timedelta(minutes=1)
+            print(app.permanent_session_lifetime)
 
             
 
@@ -1042,7 +1043,7 @@ def agedropdown():
 
 if __name__ == "__main__":
    
-    app.run(host='134.209.154.179',port=5038,debug=True)
+    app.run(host='134.209.154.179',port=5037,debug=True)
 
 
 
