@@ -323,9 +323,38 @@ def PatientSignup():
     try:
         print(request.form)
         
+        unfilled_data=[]
+
+        keyarr = ['userID','name','email','phoneNumber','gender','age','dob','address','pincode','first','healthIssue']
         
-        for i in request.form:
-            print("ee")
+        for i in keyarr:
+            if i not in request.form:
+                unfilled_data.append(i)
+
+        g=len(unfilled_data)
+        h={}
+
+        
+        if g >0:
+            for i in unfilled_data:
+
+                g.update({i:""+str(i)+""+"is reqeuired"})
+            print(g)
+
+
+
+
+
+
+
+
+
+
+
+
+        
+        
+       
             
       
         
@@ -1038,8 +1067,7 @@ def agedropdown():
 
 if __name__ == "__main__":
    
-    app.run(host='134.209.154.179',port=5073,debug=True)
-
+    app.run(host='134.209.154.179',port=5079,debug=True)
 
 
 
