@@ -350,7 +350,7 @@ def PatientSignup():
             column,values="",""
             
             
-            userID=request.form.get['userID']
+            userID=request.form.get('userID')
             print(userID)
             name=request.form["name"]
             print(name)
