@@ -30,10 +30,21 @@ app.config['SECRET_KEY'] = 'secret!'
 def doctorSignup():
     try:
         inputdata =  commonfile.DecodeInputdata(request.get_data()) 
+        
+        print(inputdata)
+        
+        if inputdata== '':
+             output = {"status":"false","message":"us not defined","result":""}
+             return output
+        
         startlimit,endlimit="",""
-        keyarr = ['userID','name']
+        keyarr = ['userID','name','password','email','qualification','age','experience','previously']
        
         msg = commonfile.CheckKeyNameBlankValue(keyarr,inputdata)
+        
+       
+
+            
        
         if msg == "1":
             
@@ -186,6 +197,7 @@ def doctorlogin():
 @app.route('/updatedoctorProfile', methods=['POST'])
 def updateDoctorProfile():
     try:
+        
         inputdata =  commonfile.DecodeInputdata(request.get_data()) 
         startlimit,endlimit="",""
         keyarr = ["name","email",'userID']
@@ -306,17 +318,36 @@ def doctorProfile():
 
 #Patient api
 
-
 @app.route('/PatientSignup', methods=['POST'])
 def PatientSignup():
     try:
-        inputdata =  commonfile.DecodeInputdata(request.get_data()) 
+        
+        
+        inputdata=  commonfile.DecodeInputdata(request.get_data())
+        print(inputdata)
+        
+        
+        
+        
+        if inputdata== None or '':
+             
+             output = {"status":"false","message":"userID not defined","result":""}
+             return output
+        
+        
+        
         startlimit,endlimit="",""
-        keyarr = ['userID','name']
-       
+        
+        
+        keyarr = ['userID','name','email','phoneNumber','gender','age','dob','address','pincode','first','healthIssue']
+        
+        
         msg = commonfile.CheckKeyNameBlankValue(keyarr,inputdata)
+        
        
+        
         if msg == "1":
+            
             
             column,values="",""
             print(inputdata)
@@ -1004,8 +1035,7 @@ def agedropdown():
 
 if __name__ == "__main__":
    
-    app.run(host='0.0.0.0',port=5000,debug=True)
-
+    app.run(host='134.209.154.179',port=5068,debug=True)
 
 
 
