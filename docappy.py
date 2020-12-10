@@ -322,7 +322,7 @@ def doctorProfile():
 def PatientSignup():
     try:
         print(request.form)
-        
+
         unfilled_data=[]
 
         keyarr = ['userID','name','email','phoneNumber','gender','age','dob','address','pincode','first','healthIssue']
@@ -338,8 +338,8 @@ def PatientSignup():
         if g >0:
             for i in unfilled_data:
 
-                g.update({i:""+str(i)+""+"is reqeuired"})
-            print(g)
+                h.update({i:""+str(i)+""+"is reqeuired"})
+            print(h)
 
 
 
@@ -1067,7 +1067,7 @@ def agedropdown():
 
 if __name__ == "__main__":
    
-    app.run(host='134.209.154.179',port=5074,debug=True)
+    app.run(host='134.209.154.179',port=5037,debug=True)
 
 
 
