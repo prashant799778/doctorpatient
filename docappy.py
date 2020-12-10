@@ -332,15 +332,20 @@ def PatientSignup():
                 unfilled_data.append(i)
 
         g=len(unfilled_data)
-        
+
         h={}
+        
 
         
         if g >0:
             for i in unfilled_data:
 
-                h.update({i:""+str(i)+""+" is reqeuired"})
-            print(h)
+                h.update({i:""+str(i)+""+" is required"})
+            
+            data={'status':'false','message':"Incomplete data",'result':h}
+        else:
+
+
 
 
 
@@ -362,24 +367,7 @@ def PatientSignup():
         
         
         
-        if inputdata== None or '':
-             
-             output = {"status":"false","message":"userID not defined","result":""}
-             return output
         
-        
-        
-        startlimit,endlimit="",""
-        
-        
-        keyarr = ['userID','name','email','phoneNumber','gender','age','dob','address','pincode','first','healthIssue']
-        
-        
-        msg = commonfile.CheckKeyNameBlankValue(keyarr,inputdata)
-        
-       
-        
-        if msg == "1":
             
             
             column,values="",""
@@ -1068,7 +1056,7 @@ def agedropdown():
 
 if __name__ == "__main__":
    
-    app.run(host='134.209.154.179',port=5028,debug=True)
+    app.run(host='134.209.154.179',port=5039,debug=True)
 
 
 
