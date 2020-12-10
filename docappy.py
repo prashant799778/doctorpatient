@@ -334,6 +334,7 @@ def PatientSignup():
         g=len(unfilled_data)
 
         h={}
+        print(g,"ww")
         
 
         
@@ -352,8 +353,10 @@ def PatientSignup():
             
             userID=request.form.get('userID')
             print(userID)
+
             name=request.form["name"]
             print(name)
+            
             email=request.form['email']
             phoneNumber=request.form["phoneNumber"]
 
