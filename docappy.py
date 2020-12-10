@@ -503,22 +503,14 @@ def patientlogin():
             session.permanent = True
             app.permanent_session_lifetime = timedelta(minutes=5)
 
-            secretKey = 'secret'
-            encoded_jwt = jwt.encode(loginuser['result'],secretKey, algorithm='HS256')
-            a=str(encoded_jwt).split("'")
             
-            print(a[1])
-            
-            aq={}
 
-            aq['token']=a[1]
-            
-            aq['userID']=loginuser['result']['userID']
+           
 
             
             if (loginuser['status']!='false'):
 
-                return aq
+                return loginuser
           
 
                               
