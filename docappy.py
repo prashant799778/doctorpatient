@@ -13,7 +13,8 @@ from datetime import datetime
 import databasefile
 import commonfile
 import jwt
-
+from datetime import timedelta
+from flask import session
 
 
 
@@ -476,17 +477,31 @@ def PatientSignup():
 @app.route('/patientLogin', methods=['POST'])
 def patientlogin():
     try:
-        inputdata =  commonfile.DecodeInputdata(request.get_data())
+        
         startlimit,endlimit="",""
         keyarr = ['password','name']
+        unfilled_data=[]
+        if 'password' not in request.form:
+            unfilled_data.append('password')
+        if 'name' not in request.form:
+            unfilled_data.append('name')
+        g=len(unfilled_data)
+        h={}
+        if g>0:
+            h.update({i:""+str(i)+""+" is required"})
+
+
      
-        msg = commonfile.CheckKeyNameBlankValue(keyarr,inputdata)
-        if msg == "1":
-            name = inputdata["name"]
-            password = inputdata["password"]
+        
+        if g ==0:
+            name = request.form["name"]
+            password = request.form["password"]
             column=  "*"
             whereCondition= " and name = '" + str(name) + "' and password = '" + str(password) + "'"
             loginuser=databasefile.SelectQuery1("patientMaster",column,whereCondition)
+            print(session,'session')
+            session.permanent = True
+            app.permanent_session_lifetime = timedelta(minutes=5)
 
             secretKey = 'secret'
             encoded_jwt = jwt.encode(loginuser['result'],secretKey, algorithm='HS256')
