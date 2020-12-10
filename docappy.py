@@ -44,36 +44,40 @@ app.config['SECRET_KEY'] = 'secret!'
 @app.route('/doctorSignup', methods=['POST'])
 def doctorSignup():
     try:
-        inputdata =  commonfile.DecodeInputdata(request.get_data()) 
-        
-        print(inputdata)
-        
-        if inputdata== '':
-             output = {"status":"false","message":"us not defined","result":""}
-             return output
-        
-        startlimit,endlimit="",""
         keyarr = ['userID','name','password','email','qualification','age','experience','previously']
-       
-        msg = commonfile.CheckKeyNameBlankValue(keyarr,inputdata)
-        
-       
+        for i in keyarr:
+            if i not in request.form:
+                unfilled_data.append(i)
 
+        g=len(unfilled_data)
+
+        h={}
+        print(g,"ww")
+        
+
+        
+        if g >0:
+            for i in unfilled_data:
+
+                h.update({i:""+str(i)+""+" is required"})
             
+            data={'status':'false','message':"Incomplete data",'result':h}
+            return data
+        
+        else:
        
-        if msg == "1":
             
             column,values="",""
 
-            userID=inputdata['userID']
-            name=inputdata["name"]
-            email=inputdata['email']
-            qualification=inputdata["qualification"]
-            password=inputdata['password']
-            age=inputdata['age']
-            speciality=inputdata['speciality']
-            experience=inputdata['experience']
-            previously=inputdata['previously']
+            userID=request.form['userID']
+            name=request.form["name"]
+            email=request.form['email']
+            qualification=request.form["qualification"]
+            password=request.form['password']
+            age=request.form['age']
+            speciality=request.form['speciality']
+            experience=request.form['experience']
+            previously=request.form['previously']
             
           
           
@@ -99,24 +103,24 @@ def doctorSignup():
             else:
                
 
-                if 'email' in inputdata:
-                    email=inputdata["email"]
+                if 'email' in request.form:
+                    
                     column=column+" ,email"
                     values=values+"','"+str(email)
-                if 'password' in inputdata:
-                    password=inputdata["password"]
+                if 'password' in request.form:
+                    
                     column=column+" ,password"
                     values=values+"','"+str(password)
-                if 'previously' in inputdata:
-                    previously=inputdata["previously"]
+                if 'previously' in request.form:
+                   
                     column=column+" ,previously"
                     values=values+"','"+str(previously)
-                if 'age' in inputdata:
-                    age=inputdata["age"]
+                if 'age' in request.form:
+                   
                     column=column+" ,age"
                     values=values+"','"+str(age)
-                if 'speciality' in inputdata:
-                    speciality=inputdata["speciality"]
+                if 'speciality' in request.form:
+                   
                     column=column+" ,speciality"
                     values=values+"','"+str(speciality)
 
@@ -143,8 +147,7 @@ def doctorSignup():
                 else:
                     return commonfile.Errormessage()
                         
-        else:
-            return msg 
+       
     except Exception as e :
         print("Exception---->" +str(e))           
         output = {"status":"false","message":"something went wrong","result":""}
@@ -160,33 +163,33 @@ def doctorSignup():
 @app.route('/doctorLogin', methods=['POST'])
 def doctorlogin():
     try:
-        inputdata =  commonfile.DecodeInputdata(request.get_data())
         startlimit,endlimit="",""
         keyarr = ['password','name']
+        unfilled_data=[]
+        if 'password' not in request.form:
+            unfilled_data.append('password')
+        if 'name' not in request.form:
+            unfilled_data.append('name')
+        g=len(unfilled_data)
+        h={}
+        if g>0:
+            h.update({i:""+str(i)+""+" is required"})
+
+
      
-        msg = commonfile.CheckKeyNameBlankValue(keyarr,inputdata)
-        if msg == "1":
-            name = inputdata["name"]
-            password = inputdata["password"]
+        
+        if g ==0:
+            name = request.form["name"]
+            password = request.form["password"]
+
             column=  "email,name,experience,speciality,previously,userID"
             whereCondition= " and name = '" + str(name) + "' and password = '" + str(password) + "'"
             loginuser=databasefile.SelectQuery1("doctorMaster",column,whereCondition)
 
-            secretKey = 'secret'
-            encoded_jwt = jwt.encode(loginuser['result'],secretKey, algorithm='HS256')
-            a=str(encoded_jwt).split("'")
             
-            print(a[1])
-            
-            aq={}
-
-            aq['token']=a[1]
-            
-            aq['userID']=loginuser['result']['userID']
-
 
             if (loginuser['status']!='false'):
-                return aq
+                return loginuser
           
 
                               
@@ -213,13 +216,22 @@ def doctorlogin():
 def updateDoctorProfile():
     try:
         
-        inputdata =  commonfile.DecodeInputdata(request.get_data()) 
         startlimit,endlimit="",""
-        keyarr = ["name","email",'userID']
+        keyarr = ['userID']
+        unfilled_data=[]
+        if 'userID' not in request.form:
+            unfilled_data.append('userID')
         
-        msg = commonfile.CheckKeyNameBlankValue(keyarr,inputdata)
-       
-        if msg == "1":
+        g=len(unfilled_data)
+        h={}
+        if g>0:
+            h.update({i:""+str(i)+""+" is required"})
+
+
+     
+        
+        if g ==0:
+            userID = request.form["userID"]
 
             name,email,password,userTypeId,mobileNo,gender="","","","","",""
             column,values="",""
@@ -227,31 +239,31 @@ def updateDoctorProfile():
           
 
             
-            if 'email' in inputdata:
-                email=inputdata["email"]
+            if 'email' in request.form:
+                email=request.form["email"]
                 column=" email='"+str(email)+"' " 
 
-            if 'name' in inputdata:
-                name=inputdata["name"]
+            if 'name' in request.form:
+                name=request.form["name"]
                 column=column+" ,name='"+str(name)+"' "  
 
             
 
-            if 'userID' in inputdata:
-                userID=inputdata["userID"]    
+            if 'userID' in request.form:
+                userID=request.form["userID"]    
 
-            if 'speciality' in inputdata:
-                speciality=inputdata["speciality"]
+            if 'speciality' in request.form:
+                speciality=request.form["speciality"]
                 column=column+" ,speciality='"+str(speciality)+"' "
 
-            if 'experience' in inputdata:
-                experience=inputdata["experience"]
+            if 'experience' in request.form:
+                experience=request.form["experience"]
                 column=column+" ,experience='"+str(experience)+"' "
-            if 'age' in inputdata:
-                age=inputdata["age"]
+            if 'age' in request.form:
+                age=request.form["age"]
                 column=column+" ,age='"+str(age)+"' "
-            if 'previously' in inputdata:
-                previously=inputdata["previously"]
+            if 'previously' in request.form:
+                previously=request.form["previously"]
                 column=column+" ,previously='"+str(previously)+"' "  
 
 
@@ -288,23 +300,28 @@ def updateDoctorProfile():
 @app.route('/doctorProfile', methods=['POST'])
 def doctorProfile():
     try:
-        inputdata =  commonfile.DecodeInputdata(request.get_data()) 
         startlimit,endlimit="",""
         keyarr = ['userID']
-        print(request.headers)
-        print(type(request.headers))
-
-
-        msg = commonfile.CheckKeyNameBlankValue(keyarr,inputdata)
-       
-        if msg == "1":
-            
+        unfilled_data=[]
+        if 'userID' not in request.form:
+            unfilled_data.append('userID')
         
+        g=len(unfilled_data)
+        h={}
+        if g>0:
+            h.update({i:""+str(i)+""+" is required"})
+
+
+     
+        
+        if g ==0:
+            userID = request.form["userID"]
+       
 
             
             
-            if 'userID' in inputdata:
-                userID=inputdata["userID"]    
+            if 'userID' in request.form:
+                userID=request.form["userID"]    
                 
             
             whereCondition= " and userID= '"+str(userID)+"' "
@@ -316,6 +333,10 @@ def doctorProfile():
          
 
             if data11['status'] != "false":
+                session.permanent = True
+                app.permanent_session_lifetime = timedelta(minutes=3)
+                print(app.permanent_session_lifetime)
+                
                 Data = {"status":"true","message":"","result":data11['result']}                  
                 return Data
             else:
@@ -550,13 +571,17 @@ def patientlogin():
 @app.route('/updatePatientProfile', methods=['POST'])
 def updatePatientProfile():
     try:
-        inputdata =  commonfile.DecodeInputdata(request.get_data()) 
         startlimit,endlimit="",""
-        keyarr = ["name","email",'userID']
+        keyarr = ['userID']
+        unfilled_data=[]
+        if 'userID' not in request.form:
+            unfilled_data.append('userID')
         
-        msg = commonfile.CheckKeyNameBlankValue(keyarr,inputdata)
-       
-        if msg == "1":
+        g=len(unfilled_data)
+        h={}
+        if g>0:
+            h.update({i:""+str(i)+""+" is required"})
+
 
             
             name,email,password,userTypeId,mobileNo,gender="","","","","",""
@@ -566,55 +591,55 @@ def updatePatientProfile():
           
 
             
-            if 'email' in inputdata:
-                email=inputdata["email"]
+            if 'email' in request.form:
+                email=request.form["email"]
                 column=" email='"+str(email)+"' " 
 
             
-            if 'name' in inputdata:
-                name=inputdata["name"]
+            if 'name' in request.form:
+                name=request.form["name"]
                 column=column+" ,name='"+str(name)+"' "  
 
             
 
-            if 'userID' in inputdata:
-                userID=inputdata["userID"]   
+            if 'userID' in request.form:
+                userID=request.form["userID"]   
 
 
             
-            if 'phoneNumber' in inputdata:
-                phoneNumber=inputdata["phoneNumber"]
+            if 'phoneNumber' in request.form:
+                phoneNumber=request.form["phoneNumber"]
                 column=column+" ,phoneNumber='"+str(phoneNumber)+"' "
 
 
             
             
-            if 'dob' in inputdata:
-                dob=inputdata["dob"]
+            if 'dob' in request.form:
+                dob=request.form["dob"]
                 column=column+" ,dob='"+str(dob)+"' "
             
             
             
-            if 'age' in inputdata:
-                age=inputdata["age"]
+            if 'age' in request.form:
+                age=request.form["age"]
                 column=column+" ,age='"+str(age)+"' "
 
             
             
-            if 'gender' in inputdata:
-                gender=inputdata["gender"]
+            if 'gender' in request.form:
+                gender=request.form["gender"]
                 column=column+" ,gender='"+str(gender)+"' "  
 
-            if 'address' in inputdata:
-                address=inputdata["address"]
+            if 'address' in request.form:
+                address=request.form["address"]
                 column=column+" ,address='"+str(address)+"' "
 
-            if 'pincode' in inputdata:
-                pincode=inputdata["pincode"]
+            if 'pincode' in request.form:
+                pincode=request.form["pincode"]
                 column=column+" ,pincode='"+str(pincode)+"' "  
 
-            if 'healthIssue' in inputdata:
-                healthIssue=inputdata["healthIssue"]
+            if 'healthIssue' in request.form:
+                healthIssue=request.form["healthIssue"]
                 column=column+" ,healthIssue='"+str(healthIssue)+"' "  
   
 
@@ -642,20 +667,24 @@ def updatePatientProfile():
 @app.route('/patientProfile', methods=['POST'])
 def patientProfile():
     try:
-        inputdata =  commonfile.DecodeInputdata(request.get_data()) 
         startlimit,endlimit="",""
         keyarr = ['userID']
+        unfilled_data=[]
+        if 'userID' not in request.form:
+            unfilled_data.append('userID')
         
-        msg = commonfile.CheckKeyNameBlankValue(keyarr,inputdata)
-       
-        if msg == "1":
-            
+        g=len(unfilled_data)
+        h={}
+        if g>0:
+            h.update({i:""+str(i)+""+" is required"})
+
+
         
 
             
             
-            if 'userID' in inputdata:
-                userID=inputdata["userID"]    
+            if 'userID' in request.form:
+                userID=request.form["userID"]    
                 
             
             whereCondition= " and userID= '"+str(userID)+"' "
@@ -688,17 +717,25 @@ def patientProfile():
 @app.route('/addservices', methods=['POST'])
 def addservices():
     try:
-        inputdata =  commonfile.DecodeInputdata(request.get_data()) 
         startlimit,endlimit="",""
-        keyarr = ['services']
-       
-        msg = commonfile.CheckKeyNameBlankValue(keyarr,inputdata)
-       
-        if msg == "1":
+        keyarr = ['services','description']
+        unfilled_data=[]
+        if 'services' not in request.form:
+            unfilled_data.append('services')
+        if 'description' not in request.form:
+            unfilled_data.append('description')
+
+        
+        g=len(unfilled_data)
+        h={}
+        if g>0:
+            h.update({i:""+str(i)+""+" is required"})
+
+
             
             column,values="",""
-            services=inputdata['services']
-            description=inputdata['description']
+            services=request.form['services']
+            description=request.form['description']
             column22='*'
             WhereCondition = "  and  services = '" + str(services) + "' "
             count = databasefile.SelectQuery1("serviceMaster",column22,WhereCondition)
@@ -931,19 +968,21 @@ def allservices():
 @app.route('/addqualification', methods=['POST'])
 def addqualification():
     try:
-        inputdata =  commonfile.DecodeInputdata(request.get_data()) 
         startlimit,endlimit="",""
-
         keyarr = ['qualification']
+        unfilled_data=[]
+        if 'qualification' not in request.form:
+            unfilled_data.append('qualification')
        
-        
-        msg = commonfile.CheckKeyNameBlankValue(keyarr,inputdata)
-       
-        if msg == "1":
+        g=len(unfilled_data)
+        h={}
+        if g>0:
+            h.update({i:""+str(i)+""+" is required"})
+
             
             
             column,values="",""
-            qualification=inputdata['qualification']
+            qualification=request.form['qualification']
            
             column22='*'
             WhereCondition = "  and  qualification = '" + str(qualification) + "' "
@@ -1057,7 +1096,7 @@ def agedropdown():
 
 if __name__ == "__main__":
    
-    app.run(host='134.209.154.179',port=5037,debug=True)
+    app.run(host='134.209.154.179',port=5028,debug=True)
 
 
 
