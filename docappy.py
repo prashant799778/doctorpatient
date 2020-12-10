@@ -321,7 +321,7 @@ def doctorProfile():
 @app.route('/PatientSignup', methods=['POST'])
 def PatientSignup():
     try:
-        print(request.form)
+      
 
         unfilled_data=[]
 
@@ -350,8 +350,10 @@ def PatientSignup():
             column,values="",""
             
             
-            userID=request.form['userID']
+            userID=request.form.get['userID']
+            print(userID)
             name=request.form["name"]
+            print(name)
             email=request.form['email']
             phoneNumber=request.form["phoneNumber"]
 
