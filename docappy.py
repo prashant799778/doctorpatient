@@ -346,23 +346,24 @@ def PatientSignup():
             return data
         
         else:
+
             column,values="",""
-            print(inputdata)
+            
+            
+            userID=request.form['userID']
+            name=request.form["name"]
+            email=request.form['email']
+            phoneNumber=request.form["phoneNumber"]
 
-            userID=inputdata['userID']
-            name=inputdata["name"]
-            email=inputdata['email']
-            phoneNumber=inputdata["phoneNumber"]
+            password=request.form['password']
+            gender=request.form['gender']
+            age=request.form['age']
 
-            password=inputdata['password']
-            gender=inputdata['gender']
-            age=inputdata['age']
-
-            dob=inputdata['dob']
-            address=inputdata['address']
-            pincode=inputdata['pincode']
-            first=inputdata['first']
-            healthIssue=inputdata['healthIssue']
+            dob=request.form['dob']
+            address=request.form['address']
+            pincode=request.form['pincode']
+            first=request.form['first']
+            healthIssue=request.form['healthIssue']
             
           
             
@@ -388,45 +389,42 @@ def PatientSignup():
 
             else:
 
-                if 'email' in inputdata:
-                    email=inputdata["email"]
+                if 'email' in request.form:
                     column=column+" ,email"
                     values=values+"','"+str(email)
 
                 
-                if 'password' in inputdata:
-                    password=inputdata["password"]
+                if 'password' in request.form:
+                    
                     column=column+" ,password"
                     values=values+"','"+str(password)
                 
                 
-                if 'phoneNumber' in inputdata:
-                    phoneNumber=inputdata["phoneNumber"]
+                if 'phoneNumber' in request.form:
                     column=column+" ,phoneNumber"
                     values=values+"','"+str(phoneNumber)
                 
-                if 'age' in inputdata:
-                    age=inputdata["age"]
+                if 'age' in request.form:
+                    
                     column=column+" ,age"
                     values=values+"','"+str(age)
 
-                if 'gender' in inputdata:
-                    gender=inputdata["gender"]
+                if 'gender' in request.form:
+                    
                     column=column+" ,gender"
                     values=values+"','"+str(gender)
 
-                if 'dob' in inputdata:
-                    dob=inputdata["dob"]
+                if 'dob' in request.form:
+                    
                     column=column+" ,dob"
                     values=values+"','"+str(dob)
 
-                if 'pincode' in inputdata:
-                    pincode=inputdata["pincode"]
+                if 'pincode' in request.form:
+                    
                     column=column+" ,pincode"
                     values=values+"','"+str(pincode)
 
-                if 'address' in inputdata:
-                    address=inputdata["address"]
+                if 'address' in request.form:
                     column=column+" ,address"
                     values=values+"','"+str(address)
                     
@@ -1031,7 +1029,7 @@ def agedropdown():
 
 if __name__ == "__main__":
    
-    app.run(host='134.209.154.179',port=5030,debug=True)
+    app.run(host='134.209.154.179',port=5037,debug=True)
 
 
 
