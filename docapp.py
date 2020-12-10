@@ -322,8 +322,8 @@ def doctorProfile():
 def PatientSignup():
     try:
         
-        inputdata= request.form['userID']
         
+        inputdata=  commonfile.DecodeInputdata(request.get_data())
         print(inputdata)
         
         
@@ -1035,7 +1035,7 @@ def agedropdown():
 
 if __name__ == "__main__":
    
-    app.run(host='134.209.154.179',port=5065,debug=True)
+    app.run(host='134.209.154.179',port=5037,debug=True)
 
 
 
