@@ -1057,9 +1057,9 @@ def allqualification():
     try:
        
         startlimit,endlimit="",""
-        a=request.headers
+        a=request.headers['key']
         print(a)
-        print(type(a))
+        
 
 
       
