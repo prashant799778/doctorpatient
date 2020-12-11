@@ -107,7 +107,7 @@ def doctorSignup():
             
             if count['status']!='false':
                 
-                data={"result":"","status":"false","message":"Already Registed through this email"}
+                data={"result":"","status":"false","message":"Already Registed through this email & userID"}
                 print(data)
                 return data
                 
@@ -466,7 +466,7 @@ def PatientSignup():
             
             if count['status']!='false':
                 
-                data={"result":"","status":"false","message":"Already Registed through this email"}
+                data={"result":"","status":"false","message":"Already Registed through this email & userID"}
                 print(data)
                 return data
 
