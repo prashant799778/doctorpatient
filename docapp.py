@@ -153,7 +153,7 @@ def doctorSignup():
 
                 if data != "0":
                     expires = datetime.timedelta(minutes=5)
-                    access_token = create_access_token(identity=str(userID), expires_delta=)
+                    access_token = create_access_token(identity=str(userID), expires_delta=expires)
                     whereCondition= " and  name= '"+str(name)+"'"
                     column=" access_token='"+str(access_token)+"' " 
                     data=databasefile.UpdateQuery("doctorMaster",column,whereCondition)
