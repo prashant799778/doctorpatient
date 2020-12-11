@@ -13,10 +13,10 @@ from datetime import datetime
 import databasefile
 import commonfile
 import jwt
-from datetime import timedelta
+import datetime 
 from flask import session
 from werkzeug.security import generate_password_hash, check_password_hash
-import base64
+import jwt
 
 
 
@@ -26,7 +26,7 @@ import base64
 
 from flask import Flask, render_template
 from flask_login import LoginManager, login_user, logout_user
-
+from jwt import PyJWT
 
 
 app = Flask(__name__) 
@@ -77,7 +77,7 @@ def doctorSignup():
             email=request.form['email']
             qualification=request.form["qualification"]
             password=request.form['password']
-           
+            password=generate_password_hash(password)
             print(password,'sek')
             age=request.form['age']
             speciality=request.form['speciality']
@@ -165,19 +165,28 @@ def doctorSignup():
 
 #user Login
 
+
+
+
+
+#user Login
+
 @app.route('/doctorLogin', methods=['POST'])
 
 def doctorlogin():
     try:
         startlimit,endlimit="",""
-        keyarr = ['password','name']
+        keyarr = ['password','Username']
         unfilled_data=[]
-        if 'password' not in request.form:
+       
+        if 'password' not in request.authorization:
             unfilled_data.append('password')
-        if 'name' not in request.form:
-            unfilled_data.append('name')
+        if 'username' not in request.authorization:
+            unfilled_data.append('username')
+        
         g=len(unfilled_data)
         h={}
+        
         if g>0:
             for i in unfilled_data:
                 h.update({i:""+str(i)+""+" is required"})
@@ -188,21 +197,24 @@ def doctorlogin():
      
         
         if g ==0:
-            name = request.form["name"]
-            password = request.form["password"]
-
-            column=  "email,name,experience,speciality,previously,userID"
-            whereCondition= " and name = '" + str(name) + "' and password = '" + str(password) + "'"
+            name = request.authorization["username"]
+            password=request.authorization['password']
+           
+            column=  "email,name,experience,speciality,previously,userID,password"
+            whereCondition= " and name = '" + str(name) + "'"
             loginuser=databasefile.SelectQuery1("doctorMaster",column,whereCondition)
+           
+            if loginuser['result'] and check_password_hash(loginuser['result']['password'], password):
 
-            
-
-            if (loginuser['status']!='false'):
-                session.permanent = True
-                app.permanent_session_lifetime = timedelta(minutes=3)
-                print(app.permanent_session_lifetime)
-                return loginuser
-          
+                print(loginuser['result'] and check_password_hash(loginuser['result']['password'], password))
+                if (loginuser['status']!='false'):
+                    session.permanent = True
+                    # token = PyJWT.encode({'userID': loginuser['result']['userID']},key= 'secret' , algorithm= 'RS256')  
+                    app.permanent_session_lifetime = datetime.timedelta(minutes=3)
+                    print(app.permanent_session_lifetime)
+                    # token1={'token':token}
+                    return loginuser
+              
 
                               
         
@@ -415,6 +427,8 @@ def PatientSignup():
                 phoneNumber=request.form["phoneNumber"]
 
                 password=request.form['password']
+                password=generate_password_hash(password)
+                print(password,'sek')
                 gender=request.form['gender']
                 age=request.form['age']
 
@@ -531,14 +545,17 @@ def patientlogin():
     try:
         
         startlimit,endlimit="",""
-        keyarr = ['password','name']
+        keyarr = ['password','Username']
         unfilled_data=[]
-        if 'password' not in request.form:
+       
+        if 'password' not in request.authorization:
             unfilled_data.append('password')
-        if 'name' not in request.form:
-            unfilled_data.append('name')
+        if 'username' not in request.authorization:
+            unfilled_data.append('username')
+        
         g=len(unfilled_data)
         h={}
+        
         if g>0:
             for i in unfilled_data:
                 h.update({i:""+str(i)+""+" is required"})
@@ -549,28 +566,26 @@ def patientlogin():
      
         
         if g ==0:
-            name = request.form["name"]
-            password = request.form["password"]
+            name = request.authorization["username"]
+            password=request.authorization['password']
             column=  "*"
-            whereCondition= " and name = '" + str(name) + "' and password = '" + str(password) + "'"
+            whereCondition= " and name = '" + str(name) + "' "
             loginuser=databasefile.SelectQuery1("patientMaster",column,whereCondition)
-            print(session,'session')
-            session.permanent = True
-            app.permanent_session_lifetime = timedelta(minutes=3)
-            print(app.permanent_session_lifetime)
-
-            
-
            
+           
+           
+            if loginuser['result'] and check_password_hash(loginuser['result']['password'], password):
 
-            
-            if (loginuser['status']!='false'):
-                session.permanent = True
-                app.permanent_session_lifetime = timedelta(minutes=3)
-                print(app.permanent_session_lifetime)
+                print(loginuser['result'] and check_password_hash(loginuser['result']['password'], password))
+                if (loginuser['status']!='false'):
+                    session.permanent = True
+                    # token = PyJWT.encode({'userID': loginuser['result']['userID']},key= 'secret' , algorithm= 'RS256')  
+                    app.permanent_session_lifetime = datetime.timedelta(minutes=3)
+                    print(app.permanent_session_lifetime)
+                    # token1={'token':token}
+                    return loginuser
 
-                return loginuser
-          
+                
 
                               
         
@@ -1058,11 +1073,9 @@ def allqualification():
     try:
        
         startlimit,endlimit="",""
-        a=request.headers['Authorization']
+      
         
-        password=request.authorization["password"]
-        username=request.authorization['username']
-        print(username,password)
+        
        
        
 
@@ -1144,7 +1157,7 @@ def agedropdown():
 
 if __name__ == "__main__":
     CORS(app, support_credentials=True)
-    app.permanent_session_lifetime = timedelta(minutes=3)
+    app.permanent_session_lifetime = datetime.timedelta(minutes=3)
    
     app.run(host='0.0.0.0',port=5028,debug=True)
 
