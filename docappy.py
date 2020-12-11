@@ -16,6 +16,7 @@ import jwt
 from datetime import timedelta
 from flask import session
 from werkzeug.security import generate_password_hash, check_password_hash
+import jwt
 
 
 
@@ -182,8 +183,10 @@ def doctorlogin():
             unfilled_data.append('password')
         if 'username' not in request.authorization:
             unfilled_data.append('username')
+        
         g=len(unfilled_data)
         h={}
+        
         if g>0:
             for i in unfilled_data:
                 h.update({i:""+str(i)+""+" is required"})
@@ -202,12 +205,15 @@ def doctorlogin():
             loginuser=databasefile.SelectQuery1("doctorMaster",column,whereCondition)
            
             if loginuser['result'] and check_password_hash(loginuser['result']['password'], password):
+
                 print(loginuser['result'] and check_password_hash(loginuser['result']['password'], password))
                 if (loginuser['status']!='false'):
                     session.permanent = True
+                    token = jwt.encode({'userID': loginuser['result']['userID'], 'exp' : datetime.datetime.utcnow() + datetime.timedelta(minutes=3)}, app.config['SECRET_KEY'])  
                     app.permanent_session_lifetime = timedelta(minutes=3)
                     print(app.permanent_session_lifetime)
-                    return loginuser
+                    token1={'token':token}
+                    return token1
               
 
                               
