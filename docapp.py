@@ -1059,7 +1059,7 @@ def allqualification():
         startlimit,endlimit="",""
         a=request.headers['key']
         print(a)
-        if a ='enthuons':
+        if a =='enthuons':
 
         
 
