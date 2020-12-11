@@ -162,6 +162,7 @@ def doctorSignup():
 #user Login
 
 @app.route('/doctorLogin', methods=['POST'])
+@login_required
 def doctorlogin():
     try:
         startlimit,endlimit="",""
