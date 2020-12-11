@@ -208,13 +208,12 @@ def doctorlogin():
         if g ==0:
             name = request.authorization["username"]
             password=request.authorization['password']
-            password="b'221'"
+            
            
             column=  "email,name,experience,speciality,previously,userID,password"
             whereCondition= " and name = '" + str(name) + "'"
             loginuser=databasefile.SelectQuery1("doctorMaster",column,whereCondition)
-            o=bcrypt.hashpw(password, bcrypt.gensalt())
-            print(o)
+            
            
             if loginuser['result'] and check_password_hash(loginuser['result']['password'], password):
 
