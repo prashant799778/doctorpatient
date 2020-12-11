@@ -253,7 +253,7 @@ def doctorlogin():
 @app.route('/updatedoctorProfile', methods=['POST'])
 def updateDoctorProfile():
     try:
-        if request.headers['Authorization'] !="": 
+        if 'Authorization'  in request.headers: 
             access_toke=request.headers['Authorization']
             access_token=access_toke.split(' ')
             print(access_token)
@@ -623,7 +623,7 @@ def patientlogin():
 def updatePatientProfile():
     try:
         startlimit,endlimit="",""
-        if request.headers['Authorization'] !="": 
+        if 'Authorization'  in request.headers: 
             access_toke=request.headers['Authorization']
             access_token=access_toke.split(' ')
             print(access_token)
@@ -726,7 +726,7 @@ def patientProfile():
     try:
         startlimit,endlimit="",""
 
-        if 'Authorization' not in request.headers: 
+        if 'Authorization'  in request.headers: 
             access_toke=request.headers['Authorization']
             access_token=access_toke.split(' ')
             print(access_token)
