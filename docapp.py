@@ -178,7 +178,10 @@ def doctorlogin():
         g=len(unfilled_data)
         h={}
         if g>0:
-            h.update({i:""+str(i)+""+" is required"})
+            for i in unfilled_data:
+                h.update({i:""+str(i)+""+" is required"})
+            data={'status':'false','message':"Incomplete data",'result':h}
+            return data
 
 
      
@@ -233,7 +236,10 @@ def updateDoctorProfile():
         g=len(unfilled_data)
         h={}
         if g>0:
-            h.update({i:""+str(i)+""+" is required"})
+            for i in unfilled_data:
+                h.update({i:""+str(i)+""+" is required"})
+            data={'status':'false','message':"Incomplete data",'result':h}
+            return data
 
 
      
@@ -317,7 +323,10 @@ def doctorProfile():
         g=len(unfilled_data)
         h={}
         if g>0:
-            h.update({i:""+str(i)+""+" is required"})
+            for i in unfilled_data:
+                h.update({i:""+str(i)+""+" is required"})
+            data={'status':'false','message':"Incomplete data",'result':h}
+            return data
 
 
      
@@ -351,8 +360,7 @@ def doctorProfile():
                 data={"status":"false","result":"","message":"Invalid User"}
                 return data
                         
-        else:
-            return msg 
+         
     except Exception as e :
         print("Exception---->" +str(e))           
         output = {"status":"false","message":"something went wrong","result":""}
@@ -531,7 +539,10 @@ def patientlogin():
         g=len(unfilled_data)
         h={}
         if g>0:
-            h.update({i:""+str(i)+""+" is required"})
+            for i in unfilled_data:
+                h.update({i:""+str(i)+""+" is required"})
+            data={'status':'false','message':"Incomplete data",'result':h}
+            return data
 
 
      
@@ -591,7 +602,11 @@ def updatePatientProfile():
         g=len(unfilled_data)
         h={}
         if g>0:
+
             h.update({i:""+str(i)+""+" is required"})
+            data={'status':'false','message':"Incomplete data",'result':h}
+            return data
+        else:
 
 
             
@@ -665,8 +680,7 @@ def updatePatientProfile():
             else:
                 return commonfile.Errormessage()
                         
-        else:
-            return msg 
+        
     except Exception as e :
         print("Exception---->" +str(e))           
         output = {"status":"false","message":"something went wrong","result":""}
@@ -688,6 +702,9 @@ def patientProfile():
         h={}
         if g>0:
             h.update({i:""+str(i)+""+" is required"})
+            data={'status':'false','message':"Incomplete data",'result':h}
+            return data
+        else:
 
 
         
@@ -713,8 +730,7 @@ def patientProfile():
                 data={"status":"false","result":"","message":"Invalid User"}
                 return data
                         
-        else:
-            return msg 
+        
     except Exception as e :
         print("Exception---->" +str(e))           
         output = {"status":"false","message":"something went wrong","result":""}
@@ -740,7 +756,11 @@ def addservices():
         g=len(unfilled_data)
         h={}
         if g>0:
-            h.update({i:""+str(i)+""+" is required"})
+            for i in unfilled_data:
+                h.update({i:""+str(i)+""+" is required"})
+            data={'status':'false','message':"Incomplete data",'result':h}
+            return data
+        else:
 
 
             
@@ -773,8 +793,7 @@ def addservices():
                 else:
                     return commonfile.Errormessage()
                         
-        else:
-            return msg 
+        
     except Exception as e :
         print("Exception---->" +str(e))           
         output = {"status":"false","message":"something went wrong","result":""}
@@ -988,7 +1007,11 @@ def addqualification():
         g=len(unfilled_data)
         h={}
         if g>0:
-            h.update({i:""+str(i)+""+" is required"})
+            for i in unfilled_data:
+                h.update({i:""+str(i)+""+" is required"})
+            data={'status':'false','message':"Incomplete data",'result':h}
+            return data
+        else:
 
             
             
@@ -1022,8 +1045,7 @@ def addqualification():
                 else:
                     return commonfile.Errormessage()
                         
-        else:
-            return msg 
+       
     except Exception as e :
         print("Exception---->" +str(e))           
         output = {"status":"false","message":"something went wrong","result":""}
