@@ -1154,7 +1154,7 @@ def agedropdown():
 
 if __name__ == "__main__":
     CORS(app, support_credentials=True)
-    app.permanent_session_lifetime = timedelta(minutes=3)
+    app.permanent_session_lifetime = datetime.timedelta(minutes=3)
    
     app.run(host='0.0.0.0',port=5032,debug=True)
 
