@@ -201,11 +201,11 @@ def doctorlogin():
            
             if loginuser['result'] and check_password_hash(loginuser['result']['password'], password):
                 if (loginuser['status']!='false'):
-                session.permanent = True
-                app.permanent_session_lifetime = timedelta(minutes=3)
-                print(app.permanent_session_lifetime)
-                return loginuser
-          
+                    session.permanent = True
+                    app.permanent_session_lifetime = timedelta(minutes=3)
+                    print(app.permanent_session_lifetime)
+                    return loginuser
+              
 
                               
         
