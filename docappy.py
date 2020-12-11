@@ -195,6 +195,7 @@ def doctorlogin():
         
         if g ==0:
             name = request.authorization["username"]
+            password=request.authorization['password']
            
             column=  "email,name,experience,speciality,previously,userID,password"
             whereCondition= " and name = '" + str(name) + "'"
