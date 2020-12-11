@@ -345,7 +345,7 @@ def doctorProfile():
         startlimit,endlimit="",""
         if request.headers['Authorization'] !="": 
             access_toke=request.headers['Authorization']
-            access_token=access_toke.split('Basic')
+            access_token=access_toke.split('Bearer')
        
      
         
