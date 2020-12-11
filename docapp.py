@@ -17,6 +17,7 @@ import datetime
 from flask import session
 from werkzeug.security import generate_password_hash, check_password_hash
 import jwt
+from flask_jwt_extended import create_access_token,JWTManager, jwt_required
 
 
 
@@ -29,7 +30,12 @@ from flask_login import LoginManager, login_user, logout_user
 from jwt import PyJWT
 
 
-app = Flask(__name__) 
+app = Flask(__name__)
+app.config['JWT_SECRET_KEY'] = 'super-secret'  # Change this!
+app.config['JWT_TOKEN_LOCATION'] = ['cookies']
+app.config['JWT_COOKIE_CSRF_PROTECT'] = True
+app.config['JWT_CSRF_CHECK_FORM'] = True
+jwt = JWTManager(app)  
 
 
 
@@ -78,7 +84,9 @@ def doctorSignup():
             qualification=request.form["qualification"]
             password=request.form['password']
             password=generate_password_hash(password)
+
             print(password,'sek')
+            
             age=request.form['age']
             speciality=request.form['speciality']
             experience=request.form['experience']
@@ -209,11 +217,14 @@ def doctorlogin():
                 print(loginuser['result'] and check_password_hash(loginuser['result']['password'], password))
                 if (loginuser['status']!='false'):
                     session.permanent = True
-                    # token = PyJWT.encode({'userID': loginuser['result']['userID']},key= 'secret' , algorithm= 'RS256')  
-                    app.permanent_session_lifetime = datetime.timedelta(minutes=3)
-                    print(app.permanent_session_lifetime)
-                    # token1={'token':token}
-                    return loginuser
+                    # token = PyJWT.encode({'userID': loginuser['result']['userID']},key= 'secret' , algorithm= 'RS256') 
+                    
+                    expires = datetime.timedelta(minutes=5)
+                    access_token = create_access_token(identity=str(loginuser['result']['userID']), expires_delta=expires)
+                    
+                    return {'result':{'token':access_token},"message":"","status":"true"}
+                    
+                   
               
 
                               
@@ -583,7 +594,12 @@ def patientlogin():
                     app.permanent_session_lifetime = datetime.timedelta(minutes=3)
                     print(app.permanent_session_lifetime)
                     # token1={'token':token}
-                    return loginuser
+
+                    expires = datetime.timedelta(minutes=5)
+                    access_token = create_access_token(identity=str(loginuser['result']['userID']), expires_delta=expires)
+                    return {'result':{'token':access_token},"message":"","status":"true"}
+                    
+                    
 
                 
 
