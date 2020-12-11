@@ -17,7 +17,7 @@ import datetime
 from flask import session
 from werkzeug.security import generate_password_hash, check_password_hash
 import jwt
-from flask_jwt_extended import create_access_token
+from flask_jwt_extended import create_access_token,JWTManager, jwt_required
 
 
 
@@ -30,7 +30,12 @@ from flask_login import LoginManager, login_user, logout_user
 from jwt import PyJWT
 
 
-app = Flask(__name__) 
+app = Flask(__name__)
+app.config['JWT_SECRET_KEY'] = 'super-secret'  # Change this!
+app.config['JWT_TOKEN_LOCATION'] = ['cookies']
+app.config['JWT_COOKIE_CSRF_PROTECT'] = True
+app.config['JWT_CSRF_CHECK_FORM'] = True
+jwt = JWTManager(app)  
 
 
 
