@@ -253,29 +253,26 @@ def doctorlogin():
 @app.route('/updatedoctorProfile', methods=['POST'])
 def updateDoctorProfile():
     try:
+        if 'Authorization'  in request.headers: 
+            access_toke=request.headers['Authorization']
+            access_token=access_toke.split(' ')
+            print(access_token)
+       
+     
         
-        startlimit,endlimit="",""
-        keyarr = ['userID']
-        unfilled_data=[]
-        if 'userID' not in request.form:
-            unfilled_data.append('userID')
         
-        g=len(unfilled_data)
-        h={}
-        if g>0:
-            for i in unfilled_data:
-                h.update({i:""+str(i)+""+" is required"})
-            data={'status':'false','message':"Incomplete data",'result':h}
-            return data
+                
+            
+            whereCondition= " and access_token= '"+str(access_token[1])+"' "
+            column='*'
 
+
+       
 
      
         
-        if g ==0:
-            userID = request.form["userID"]
-
-            name,email,password,userTypeId,mobileNo,gender="","","","","",""
-            column,values="",""
+        
+          
             
           
 
@@ -320,14 +317,20 @@ def updateDoctorProfile():
             data=databasefile.UpdateQuery("doctorMaster",column,whereCondition)
          
 
-            if data != "0":
+            if data['status'] != "false":
                 Data = {"status":"true","message":"data Updated Successfully","result":"data Updated Successfully"}                  
                 return Data
             else:
-                return commonfile.Errormessage()
+                data={"status":"false","result":{'token':'Token is expired ,Please Login again'},"message":"Invalid Token"}
+                return data
+                
                         
         else:
-            return msg 
+
+            data={"status":"false","result":{'token':'token is required'},"message":"Invalid User"}
+            return data
+                        
+             
     except Exception as e :
         print("Exception---->" +str(e))           
         output = {"status":"false","message":"something went wrong","result":""}
@@ -342,33 +345,18 @@ def updateDoctorProfile():
 def doctorProfile():
     try:
         startlimit,endlimit="",""
-        keyarr = ['userID']
-        unfilled_data=[]
-        if 'userID' not in request.form:
-            unfilled_data.append('userID')
         
-        g=len(unfilled_data)
-        h={}
-        if g>0:
-            for i in unfilled_data:
-                h.update({i:""+str(i)+""+" is required"})
-            data={'status':'false','message':"Incomplete data",'result':h}
-            return data
-
-
+        if 'Authorization'  in request.headers: 
+            access_toke=request.headers['Authorization']
+            access_token=access_toke.split(' ')
+            print(access_token)
+       
      
         
-        if g ==0:
-            userID = request.form["userID"]
-       
-
-            
-            
-            if 'userID' in request.form:
-                userID=request.form["userID"]    
+        
                 
             
-            whereCondition= " and userID= '"+str(userID)+"' "
+            whereCondition= " and access_token= '"+str(access_token[1])+"' "
             column='*'
 
             
@@ -378,14 +366,17 @@ def doctorProfile():
 
             if data11['status'] != "false":
                 session.permanent = True
-                app.permanent_session_lifetime = timedelta(minutes=3)
+                app.permanent_session_lifetime = datetime.timedelta(minutes=3)
                 print(app.permanent_session_lifetime)
                 
                 Data = {"status":"true","message":"","result":data11['result']}                  
                 return Data
             else:
-                data={"status":"false","result":"","message":"Invalid User"}
+                data={"status":"false","result":{'token':'Token is expired ,Please Login again'},"message":"Invalid Token"}
                 return data
+        else:
+            data={"status":"false","result":{'token':'token is required'},"message":"Invalid User"}
+            return data
                         
          
     except Exception as e :
@@ -632,23 +623,22 @@ def patientlogin():
 def updatePatientProfile():
     try:
         startlimit,endlimit="",""
-        keyarr = ['userID']
-        unfilled_data=[]
-        if 'userID' not in request.form:
-            unfilled_data.append('userID')
+        if 'Authorization'  in request.headers: 
+            access_toke=request.headers['Authorization']
+            access_token=access_toke.split(' ')
+            print(access_token)
+       
+     
         
-        g=len(unfilled_data)
-        h={}
-        if g>0:
-
-            h.update({i:""+str(i)+""+" is required"})
-            data={'status':'false','message':"Incomplete data",'result':h}
-            return data
-        else:
-
+        
+                
+            
+            whereCondition= " and access_token= '"+str(access_token[1])+"' "
+            column='*'
 
             
-            name,email,password,userTypeId,mobileNo,gender="","","","","",""
+         
+            data11=databasefile.SelectQuery1('patientMaster',column,whereCondition)
             
             column,values="",""
             
@@ -716,8 +706,12 @@ def updatePatientProfile():
                 Data = {"status":"true","message":"Data Updated Successfully","result":"Data Updated Successfully"}                  
                 return Data
             else:
-                return commonfile.Errormessage()
-                        
+                data={"status":"false","result":{'token':'Token is expired ,Please Login again'},"message":"Invalid Token"}
+                return data
+        else:
+            data={"status":"false","result":{'token':'token is required'},"message":"Invalid User"}
+            return data
+                    
         
     except Exception as e :
         print("Exception---->" +str(e))           
@@ -731,29 +725,18 @@ def updatePatientProfile():
 def patientProfile():
     try:
         startlimit,endlimit="",""
-        keyarr = ['userID']
-        unfilled_data=[]
-        if 'userID' not in request.form:
-            unfilled_data.append('userID')
+
+        if 'Authorization'  in request.headers: 
+            access_toke=request.headers['Authorization']
+            access_token=access_toke.split(' ')
+            print(access_token)
+       
+     
         
-        g=len(unfilled_data)
-        h={}
-        if g>0:
-            h.update({i:""+str(i)+""+" is required"})
-            data={'status':'false','message':"Incomplete data",'result':h}
-            return data
-        else:
-
-
         
-
-            
-            
-            if 'userID' in request.form:
-                userID=request.form["userID"]    
                 
             
-            whereCondition= " and userID= '"+str(userID)+"' "
+            whereCondition= " and access_token= '"+str(access_token[1])+"' "
             column='*'
 
             
@@ -765,9 +748,11 @@ def patientProfile():
                 Data = {"status":"true","message":"","result":data11['result']}                  
                 return Data
             else:
-                data={"status":"false","result":"","message":"Invalid User"}
+                data={"status":"false","result":{'token':'Token is expired ,Please Login again'},"message":"Invalid Token"}
                 return data
-                        
+        else:
+            data={"status":"false","result":{'token':'token is required'},"message":"Invalid Token"}
+            return data
         
     except Exception as e :
         print("Exception---->" +str(e))           
