@@ -345,7 +345,7 @@ def updateDoctorProfile():
 def doctorProfile():
     try:
         startlimit,endlimit="",""
-        if request.headers['Authorization'] !="": 
+        if 'Authorization' not in request.headers: 
             access_toke=request.headers['Authorization']
             access_token=access_toke.split(' ')
             print(access_token)
@@ -724,7 +724,8 @@ def updatePatientProfile():
 def patientProfile():
     try:
         startlimit,endlimit="",""
-        if request.headers['Authorization'] !="": 
+
+        if 'Authorization' not in request.headers: 
             access_toke=request.headers['Authorization']
             access_token=access_toke.split(' ')
             print(access_token)
