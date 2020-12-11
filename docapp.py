@@ -100,7 +100,7 @@ def doctorSignup():
             
             
             
-            column22='*'
+            column22='userID,name,experience,age,previously,speciality,email,qualification'
             
             WhereCondition = "  and  userID = '" + str(userID) + "' or email= '" + str(email) + "' "
             count = databasefile.SelectQuery1("doctorMaster",column22,WhereCondition)
@@ -152,12 +152,20 @@ def doctorSignup():
              
 
                 if data != "0":
+                    column22='userID,name,experience,age,previously,speciality,email,qualification'
+            
+                    WhereCondition = "  and  userID = '" + str(userID) + "' and email= '" + str(email) + "' "
+                    data = databasefile.SelectQuery1("doctorMaster",column22,WhereCondition)
+
+
+
                     expires = datetime.timedelta(minutes=5)
                     access_token = create_access_token(identity=str(userID), expires_delta=expires)
                     whereCondition= " and  name= '"+str(name)+"'"
                     column=" access_token='"+str(access_token)+"' " 
                     data=databasefile.UpdateQuery("doctorMaster",column,whereCondition)
-                    return{'result':{'token':access_token},'message':"","status":"true"}
+                    data['result'].update({'token':access_token})
+                    return{'result':data['result'],'message':"","status":"true"}
                     
                 else:
                     return commonfile.Errormessage()
