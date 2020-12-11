@@ -222,7 +222,7 @@ def doctorlogin():
                     expires = datetime.timedelta(minutes=5)
                     access_token = create_access_token(identity=str(loginuser['result']['userID']), expires_delta=expires)
                     whereCondition= " and  name= '"+str(name)+"'"
-                    column=" token='"+str(access_token)+"' " 
+                    column=" access_token='"+str(access_token)+"' " 
                     data=databasefile.UpdateQuery("doctorMaster",column,whereCondition)
                     
                     return {'result':{'token':access_token},"message":"","status":"true"}
@@ -601,7 +601,7 @@ def patientlogin():
                     expires = datetime.timedelta(minutes=5)
                     access_token = create_access_token(identity=str(loginuser['result']['userID']), expires_delta=expires)
                     whereCondition= " and  name= '"+str(name)+"'"
-                    column=" token='"+str(access_token)+"' " 
+                    column=" access_token='"+str(access_token)+"' " 
                     data=databasefile.UpdateQuery("patientMaster",column,whereCondition)
                     return {'result':{'token':access_token},"message":"","status":"true"}
                     
