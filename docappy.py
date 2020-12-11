@@ -362,7 +362,7 @@ def doctorProfile():
 
             if data11['status'] != "false":
                 session.permanent = True
-                app.permanent_session_lifetime = timedelta(minutes=3)
+                app.permanent_session_lifetime = datetime.timedelta(minutes=3)
                 print(app.permanent_session_lifetime)
                 
                 Data = {"status":"true","message":"","result":data11['result']}                  
