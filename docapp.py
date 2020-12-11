@@ -1030,7 +1030,7 @@ def addqualification():
         return output
 
 
-@app.route('/allqualification', methods=['POST'])
+@app.route('/allqualification', methods=['GET'])
 def allqualification():
     try:
        
