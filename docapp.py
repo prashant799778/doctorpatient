@@ -1035,6 +1035,10 @@ def allqualification():
     try:
        
         startlimit,endlimit="",""
+        a=request.headers
+        print(headers)
+        
+
       
      
         column=  "qualification"
