@@ -746,7 +746,7 @@ def addservices():
             
             column,values="",""
             services=request.form['services']
-            description=request.form['description']
+            description=commonfile.EscapeSpecialChar(request.form['description'])
             column22='*'
             WhereCondition = "  and  services = '" + str(services) + "' "
             count = databasefile.SelectQuery1("serviceMaster",column22,WhereCondition)
