@@ -536,7 +536,7 @@ def PatientSignup():
                     data=databasefile.UpdateQuery("patientMaster",column,whereCondition)
                     return{'result':{'token':access_token},'message':"","status":"true"}
                     
-                else:
+               
                 else:
                     return commonfile.Errormessage()
                         
