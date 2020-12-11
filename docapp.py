@@ -152,12 +152,11 @@ def doctorSignup():
              
 
                 if data != "0":
-                    column = '*'
+                    access_token = create_access_token(identity=str(userID), expires_delta=expires)
+                    whereCondition= " and  name= '"+str(name)+"'"
+                    column=" access_token='"+str(access_token)+"' " 
+                    data=databasefile.UpdateQuery("doctorMaster",column,whereCondition)
                     
-                    data = databasefile.SelectQuery1("doctorMaster",column,WhereCondition)
-                    print(data)
-                    Data = {"status":"true","message":"","result":data["result"]}                  
-                    return Data
                 else:
                     return commonfile.Errormessage()
                         
