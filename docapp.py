@@ -1057,8 +1057,10 @@ def allqualification():
     try:
        
         startlimit,endlimit="",""
-        a=request.headers
+        a=request.headers['Authorization']
         print(a)
+        j=base64.b64encode(a)
+        print(j)
        
 
         
@@ -1109,7 +1111,7 @@ def agedropdown():
             for i in range(1,101):
                 age.append(i)
             data={}
-            data['message']="ss"
+            data['message']=""
             data['result']=age
             data['status']='true'
 
