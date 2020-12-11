@@ -253,6 +253,7 @@ def doctorlogin():
 @app.route('/updatedoctorProfile', methods=['POST'])
 def updateDoctorProfile():
     try:
+
         
         startlimit,endlimit="",""
         keyarr = ['userID']
@@ -342,33 +343,16 @@ def updateDoctorProfile():
 def doctorProfile():
     try:
         startlimit,endlimit="",""
-        keyarr = ['userID']
-        unfilled_data=[]
-        if 'userID' not in request.form:
-            unfilled_data.append('userID')
-        
-        g=len(unfilled_data)
-        h={}
-        if g>0:
-            for i in unfilled_data:
-                h.update({i:""+str(i)+""+" is required"})
-            data={'status':'false','message':"Incomplete data",'result':h}
-            return data
-
-
+        if request.headers['Authorization'] !="": 
+            access_toke=request.headers['Authorization']
+            access_token=access_toke.split('Basic')
+       
      
         
-        if g ==0:
-            userID = request.form["userID"]
-       
-
-            
-            
-            if 'userID' in request.form:
-                userID=request.form["userID"]    
+        
                 
             
-            whereCondition= " and userID= '"+str(userID)+"' "
+            whereCondition= " and access_token= '"+str(access_token)+"' "
             column='*'
 
             
