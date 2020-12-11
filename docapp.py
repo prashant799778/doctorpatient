@@ -1057,9 +1057,8 @@ def allqualification():
     try:
        
         startlimit,endlimit="",""
-        a=request.headers['key']
-        print(a)
-        if a =='enthuons':
+        a=request.headers
+       
 
         
 
@@ -1085,7 +1084,7 @@ def allqualification():
                 data={"status":"false","message":"No Qualification Exits","result":""}
                 return data
         else:
-            data={"status":"false","message":"Invalid headers key","result":""}
+            data={"status":"false","message":"Invalid headers value","result":""}
             return data
 
        
@@ -1105,16 +1104,18 @@ def allqualification():
 @app.route('/agedropdown', methods=['GET'])
 def agedropdown():
     try:
+       
+       
         
-        age=[]
-        for i in range(1,101):
-            age.append(i)
-        data={}
-        data['message']=""
-        data['result']=age
-        data['status']='true'
+            age=[]
+            for i in range(1,101):
+                age.append(i)
+            data={}
+            data['message']=""
+            data['result']=age
+            data['status']='true'
 
-        return data
+            return data
        
     except KeyError as e:
         print("Exception---->" +str(e))        
