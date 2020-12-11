@@ -1036,7 +1036,8 @@ def allqualification():
        
         startlimit,endlimit="",""
         a=request.headers
-        print(a.Key)
+        print(a)
+        print(type(a))
 
 
       
