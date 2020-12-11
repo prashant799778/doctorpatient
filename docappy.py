@@ -218,9 +218,11 @@ def doctorlogin():
                 if (loginuser['status']!='false'):
                     session.permanent = True
                     # token = PyJWT.encode({'userID': loginuser['result']['userID']},key= 'secret' , algorithm= 'RS256') 
+                    
                     expires = datetime.timedelta(minutes=5)
                     access_token = create_access_token(identity=str(loginuser['result']['userID']), expires_delta=expires)
-                    return {'token': access_token}
+                    
+                    return {'result':{'token':access_token},"message":"","status":"true"}
                     
                    
               
@@ -592,7 +594,12 @@ def patientlogin():
                     app.permanent_session_lifetime = datetime.timedelta(minutes=3)
                     print(app.permanent_session_lifetime)
                     # token1={'token':token}
-                    return loginuser
+
+                    expires = datetime.timedelta(minutes=5)
+                    access_token = create_access_token(identity=str(loginuser['result']['userID']), expires_delta=expires)
+                    return {'result':{'token':access_token},"message":"","status":"true"}
+                    
+                    
 
                 
 
