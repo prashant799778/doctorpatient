@@ -1059,27 +1059,33 @@ def allqualification():
         startlimit,endlimit="",""
         a=request.headers['key']
         print(a)
+        if a ='enthuons':
+
         
 
 
       
      
-        column=  "qualification"
-        whereCondition= " "
-        data=databasefile.SelectQueryMaxId("qualificationMaster",column)
-        if (data['status']!='false'):
-            res=[]
-            for i in data['result']:
-                res.append(i['qualification'])
-            data['result']=res
+            column=  "qualification"
+            whereCondition= " "
+            data=databasefile.SelectQueryMaxId("qualificationMaster",column)
+            if (data['status']!='false'):
+                res=[]
+                for i in data['result']:
+                    res.append(i['qualification'])
+                data['result']=res
 
-            return data
-      
+                return data
 
-                          
-    
+          
+
+                              
+        
+            else:
+                data={"status":"false","message":"No Qualification Exits","result":""}
+                return data
         else:
-            data={"status":"false","message":"No Qualification Exits","result":""}
+            data={"status":"false","message":"Invalid headers key","result":""}
             return data
 
        
