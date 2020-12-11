@@ -542,7 +542,13 @@ def PatientSignup():
                     whereCondition= " and  name= '"+str(name)+"'"
                     column=" access_token='"+str(access_token)+"' " 
                     data=databasefile.UpdateQuery("patientMaster",column,whereCondition)
-                    return{'result':{'token':access_token},'message':"","status":"true"}
+
+                    column22='name,userID,age,address,first,email,phoneNumber,gender,healthIssue'
+                    
+                    WhereCondition = "  and  userID = '" + str(userID) + "'and email= '" + str(email) + "' "
+                    count = databasefile.SelectQuery1("patientMaster",column22,WhereCondition)
+                    count['result'].update({'token':access_token})
+                    return{'result':count['result'],'message':"","status":"true"}
                     
                
                 else:
