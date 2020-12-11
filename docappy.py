@@ -179,8 +179,8 @@ def doctorlogin():
         unfilled_data=[]
         if 'password' not in request.authorization:
             unfilled_data.append('password')
-        if 'Username' not in request.authorization:
-            unfilled_data.append('Username')
+        if 'name' not in request.authorization:
+            unfilled_data.append('name')
         g=len(unfilled_data)
         h={}
         if g>0:
@@ -193,7 +193,7 @@ def doctorlogin():
      
         
         if g ==0:
-            name = request.authorization["Username"]
+            name = request.authorization["name"]
            
             column=  "email,name,experience,speciality,previously,userID,password"
             whereCondition= " and name = '" + str(name) + "'"
