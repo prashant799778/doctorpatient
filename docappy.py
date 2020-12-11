@@ -1103,6 +1103,7 @@ def agedropdown():
 
 
 if __name__ == "__main__":
+    app.permanent_session_lifetime = timedelta(minutes=3)
    
     app.run(host='134.209.154.179',port=5028,debug=True)
 
