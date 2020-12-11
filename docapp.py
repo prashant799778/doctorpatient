@@ -1065,28 +1065,25 @@ def allqualification():
 
       
      
-            column=  "qualification"
-            whereCondition= " "
-            data=databasefile.SelectQueryMaxId("qualificationMaster",column)
-            if (data['status']!='false'):
-                res=[]
-                for i in data['result']:
-                    res.append(i['qualification'])
-                data['result']=res
+        column=  "qualification"
+        whereCondition= " "
+        data=databasefile.SelectQueryMaxId("qualificationMaster",column)
+        if (data['status']!='false'):
+            res=[]
+            for i in data['result']:
+                res.append(i['qualification'])
+            data['result']=res
 
-                return data
-
-          
-
-                              
-        
-            else:
-                data={"status":"false","message":"No Qualification Exits","result":""}
-                return data
-        else:
-            data={"status":"false","message":"Invalid headers value","result":""}
             return data
 
+      
+
+                          
+    
+        else:
+            data={"status":"false","message":"No Qualification Exits","result":""}
+            return data
+        
        
     except KeyError as e:
         print("Exception---->" +str(e))        
