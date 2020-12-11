@@ -26,7 +26,7 @@ import jwt
 
 from flask import Flask, render_template
 from flask_login import LoginManager, login_user, logout_user
-
+from jwt import PyJWT
 
 
 app = Flask(__name__) 
@@ -209,7 +209,7 @@ def doctorlogin():
                 print(loginuser['result'] and check_password_hash(loginuser['result']['password'], password))
                 if (loginuser['status']!='false'):
                     session.permanent = True
-                    token = jwt.encode({'userID': loginuser['result']['userID'], 'exp' : datetime.datetime.utcnow() + datetime.timedelta(minutes=3)}, app.config['SECRET_KEY'])  
+                    token = PyJWT.encode({'userID': loginuser['result']['userID'], 'exp' : datetime.datetime.utcnow() + datetime.timedelta(minutes=3)}, app.config['SECRET_KEY'])  
                     app.permanent_session_lifetime = timedelta(minutes=3)
                     print(app.permanent_session_lifetime)
                     token1={'token':token}
