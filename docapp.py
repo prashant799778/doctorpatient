@@ -18,6 +18,7 @@ from flask import session
 from werkzeug.security import generate_password_hash, check_password_hash
 import jwt
 from flask_jwt_extended import create_access_token,JWTManager, jwt_required
+import bcrypt
 
 
 
@@ -211,8 +212,11 @@ def doctorlogin():
             column=  "email,name,experience,speciality,previously,userID,password"
             whereCondition= " and name = '" + str(name) + "'"
             loginuser=databasefile.SelectQuery1("doctorMaster",column,whereCondition)
+            o=bcrypt.hashpw(password, bcrypt.gensalt())
+            print(o)
            
             if loginuser['result'] and check_password_hash(loginuser['result']['password'], password):
+
 
                 print(loginuser['result'] and check_password_hash(loginuser['result']['password'], password))
                 if (loginuser['status']!='false'):
