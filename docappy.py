@@ -177,6 +177,7 @@ def doctorlogin():
         startlimit,endlimit="",""
         keyarr = ['password','Username']
         unfilled_data=[]
+        print(request.authorization)
         if 'password' not in request.authorization:
             unfilled_data.append('password')
         if 'name' not in request.authorization:
