@@ -209,11 +209,11 @@ def doctorlogin():
                 print(loginuser['result'] and check_password_hash(loginuser['result']['password'], password))
                 if (loginuser['status']!='false'):
                     session.permanent = True
-                    token = PyJWT.encode({'userID': loginuser['result']['userID']},key= 'secret' , algorithm= 'RS256')  
+                    # token = PyJWT.encode({'userID': loginuser['result']['userID']},key= 'secret' , algorithm= 'RS256')  
                     app.permanent_session_lifetime = datetime.timedelta(minutes=3)
                     print(app.permanent_session_lifetime)
-                    token1={'token':token}
-                    return token1
+                    # token1={'token':token}
+                    return loginuser
               
 
                               
