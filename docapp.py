@@ -76,7 +76,7 @@ def doctorSignup():
             email=request.form['email']
             qualification=request.form["qualification"]
             password=request.form['password']
-            password=generate_password_hash(password)
+           
             print(password,'sek')
             age=request.form['age']
             speciality=request.form['speciality']
@@ -1108,7 +1108,7 @@ def agedropdown():
 if __name__ == "__main__":
     app.permanent_session_lifetime = timedelta(minutes=3)
    
-    app.run(host='134.209.154.179',port=5020,debug=True)
+    app.run(host='localhost',port=5028,debug=True)
 
 
 
