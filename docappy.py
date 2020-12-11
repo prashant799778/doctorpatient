@@ -352,7 +352,7 @@ def doctorProfile():
         
                 
             
-            whereCondition= " and access_token= '"+str(access_token[1])+"' "
+            whereCondition= " and access_token= '"+str(access_token[0])+"' "
             column='*'
 
             
