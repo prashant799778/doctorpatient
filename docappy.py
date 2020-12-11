@@ -209,7 +209,7 @@ def doctorlogin():
                 print(loginuser['result'] and check_password_hash(loginuser['result']['password'], password))
                 if (loginuser['status']!='false'):
                     session.permanent = True
-                    token = PyJWT.encode({'userID': loginuser['result']['userID'],'key':'secret' , 'algorithm':'RS256', 'exp' : datetime.datetime.utcnow() + datetime.timedelta(minutes=3)}, app.config['SECRET_KEY'])  
+                    token = PyJWT.encode({'userID': loginuser['result']['userID'], 'exp' : datetime.datetime.utcnow() + datetime.timedelta(minutes=3)}, app.config['SECRET_KEY'],key= 'secret' , algorithm= 'RS256')  
                     app.permanent_session_lifetime = datetime.timedelta(minutes=3)
                     print(app.permanent_session_lifetime)
                     token1={'token':token}
@@ -1124,7 +1124,7 @@ def agedropdown():
             for i in range(1,101):
                 age.append(i)
             data={}
-            data['message']="ss"
+            data['message']=""
             data['result']=age
             data['status']='true'
 
