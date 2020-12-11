@@ -157,6 +157,7 @@ def doctorSignup():
                     whereCondition= " and  name= '"+str(name)+"'"
                     column=" access_token='"+str(access_token)+"' " 
                     data=databasefile.UpdateQuery("doctorMaster",column,whereCondition)
+                    return{'result':{'token':access_token},'message':"","status":"true"}
                     
                 else:
                     return commonfile.Errormessage()
@@ -528,11 +529,14 @@ def PatientSignup():
              
 
                 if data != "0":
-                    column = column
-                    data = databasefile.SelectQuery1("patientMaster",column,WhereCondition)
-                    print(data)
-                    Data = {"status":"true","message":"","result":data["result"]}                  
-                    return Data
+                    expires = datetime.timedelta(minutes=5)
+                    access_token = create_access_token(identity=str(userID), expires_delta=expires)
+                    whereCondition= " and  name= '"+str(name)+"'"
+                    column=" access_token='"+str(access_token)+"' " 
+                    data=databasefile.UpdateQuery("patientMaster",column,whereCondition)
+                    return{'result':{'token':access_token},'message':"","status":"true"}
+                    
+                else:
                 else:
                     return commonfile.Errormessage()
                         
