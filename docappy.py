@@ -16,7 +16,7 @@ import jwt
 from datetime import timedelta
 from flask import session
 from werkzeug.security import generate_password_hash, check_password_hash
-import jwt
+import pyjwt
 
 
 
@@ -209,7 +209,7 @@ def doctorlogin():
                 print(loginuser['result'] and check_password_hash(loginuser['result']['password'], password))
                 if (loginuser['status']!='false'):
                     session.permanent = True
-                    token = jwt.encode({'userID': loginuser['result']['userID'], 'exp' : datetime.datetime.utcnow() + datetime.timedelta(minutes=3)}, app.config['SECRET_KEY'])  
+                    token = pyjwt.encode({'userID': loginuser['result']['userID'], 'exp' : datetime.datetime.utcnow() + datetime.timedelta(minutes=3)}, app.config['SECRET_KEY'])  
                     app.permanent_session_lifetime = timedelta(minutes=3)
                     print(app.permanent_session_lifetime)
                     token1={'token':token}
