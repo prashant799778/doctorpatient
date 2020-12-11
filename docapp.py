@@ -16,6 +16,7 @@ import jwt
 from datetime import timedelta
 from flask import session
 from werkzeug.security import generate_password_hash, check_password_hash
+import base64
 
 
 
