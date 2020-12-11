@@ -993,7 +993,7 @@ def addqualification():
             
             
             column,values="",""
-            qualification=request.form['qualification']
+            qualification=commonfile.EscapeSpecialChar(request.form['qualification'])
            
             column22='*'
             WhereCondition = "  and  qualification = '" + str(qualification) + "' "
