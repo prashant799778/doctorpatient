@@ -1060,7 +1060,7 @@ def allqualification():
         startlimit,endlimit="",""
         a=request.headers['Authorization']
         print(a)
-        j=base64.b64encode(a)
+        j=base64.b64decode(a)
         print(j)
        
 
