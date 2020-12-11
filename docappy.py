@@ -15,6 +15,7 @@ import commonfile
 import jwt
 from datetime import timedelta
 from flask import session
+from werkzeug.security import generate_password_hash, check_password_hash
 
 
 
@@ -75,6 +76,8 @@ def doctorSignup():
             email=request.form['email']
             qualification=request.form["qualification"]
             password=request.form['password']
+            password=generate_password_hash(password)
+            print(password,'sek')
             age=request.form['age']
             speciality=request.form['speciality']
             experience=request.form['experience']
@@ -161,6 +164,12 @@ def doctorSignup():
 
 #user Login
 
+
+
+
+
+#user Login
+
 @app.route('/doctorLogin', methods=['POST'])
 
 def doctorlogin():
@@ -168,29 +177,30 @@ def doctorlogin():
         startlimit,endlimit="",""
         keyarr = ['password','name']
         unfilled_data=[]
-        if 'password' not in request.form:
+        if 'password' not in request.authorization:
             unfilled_data.append('password')
-        if 'name' not in request.form:
+        if 'name' not in request.authorization:
             unfilled_data.append('name')
         g=len(unfilled_data)
         h={}
         if g>0:
-            h.update({i:""+str(i)+""+" is required"})
+            for i in unfilled_data:
+                h.update({i:""+str(i)+""+" is required"})
+            data={'status':'false','message':"Incomplete data",'result':h}
+            return data
 
 
      
         
         if g ==0:
-            name = request.form["name"]
-            password = request.form["password"]
-
-            column=  "email,name,experience,speciality,previously,userID"
-            whereCondition= " and name = '" + str(name) + "' and password = '" + str(password) + "'"
+            name = request.authorization["name"]
+           
+            column=  "email,name,experience,speciality,previously,userID,password"
+            whereCondition= " and name = '" + str(name) + "'"
             loginuser=databasefile.SelectQuery1("doctorMaster",column,whereCondition)
-
-            
-
-            if (loginuser['status']!='false'):
+           
+            if loginuser['result'] and check_password_hash(loginuser['result']['password'], password):
+                if (loginuser['status']!='false'):
                 session.permanent = True
                 app.permanent_session_lifetime = timedelta(minutes=3)
                 print(app.permanent_session_lifetime)
@@ -230,7 +240,10 @@ def updateDoctorProfile():
         g=len(unfilled_data)
         h={}
         if g>0:
-            h.update({i:""+str(i)+""+" is required"})
+            for i in unfilled_data:
+                h.update({i:""+str(i)+""+" is required"})
+            data={'status':'false','message':"Incomplete data",'result':h}
+            return data
 
 
      
@@ -314,7 +327,10 @@ def doctorProfile():
         g=len(unfilled_data)
         h={}
         if g>0:
-            h.update({i:""+str(i)+""+" is required"})
+            for i in unfilled_data:
+                h.update({i:""+str(i)+""+" is required"})
+            data={'status':'false','message':"Incomplete data",'result':h}
+            return data
 
 
      
@@ -348,8 +364,7 @@ def doctorProfile():
                 data={"status":"false","result":"","message":"Invalid User"}
                 return data
                         
-        else:
-            return msg 
+         
     except Exception as e :
         print("Exception---->" +str(e))           
         output = {"status":"false","message":"something went wrong","result":""}
@@ -528,7 +543,10 @@ def patientlogin():
         g=len(unfilled_data)
         h={}
         if g>0:
-            h.update({i:""+str(i)+""+" is required"})
+            for i in unfilled_data:
+                h.update({i:""+str(i)+""+" is required"})
+            data={'status':'false','message':"Incomplete data",'result':h}
+            return data
 
 
      
@@ -588,7 +606,11 @@ def updatePatientProfile():
         g=len(unfilled_data)
         h={}
         if g>0:
+
             h.update({i:""+str(i)+""+" is required"})
+            data={'status':'false','message':"Incomplete data",'result':h}
+            return data
+        else:
 
 
             
@@ -662,8 +684,7 @@ def updatePatientProfile():
             else:
                 return commonfile.Errormessage()
                         
-        else:
-            return msg 
+        
     except Exception as e :
         print("Exception---->" +str(e))           
         output = {"status":"false","message":"something went wrong","result":""}
@@ -685,6 +706,9 @@ def patientProfile():
         h={}
         if g>0:
             h.update({i:""+str(i)+""+" is required"})
+            data={'status':'false','message':"Incomplete data",'result':h}
+            return data
+        else:
 
 
         
@@ -710,8 +734,7 @@ def patientProfile():
                 data={"status":"false","result":"","message":"Invalid User"}
                 return data
                         
-        else:
-            return msg 
+        
     except Exception as e :
         print("Exception---->" +str(e))           
         output = {"status":"false","message":"something went wrong","result":""}
@@ -737,13 +760,17 @@ def addservices():
         g=len(unfilled_data)
         h={}
         if g>0:
-            h.update({i:""+str(i)+""+" is required"})
+            for i in unfilled_data:
+                h.update({i:""+str(i)+""+" is required"})
+            data={'status':'false','message':"Incomplete data",'result':h}
+            return data
+        else:
 
 
             
             column,values="",""
             services=request.form['services']
-            description=request.form['description']
+            description=commonfile.EscapeSpecialChar(request.form['description'])
             column22='*'
             WhereCondition = "  and  services = '" + str(services) + "' "
             count = databasefile.SelectQuery1("serviceMaster",column22,WhereCondition)
@@ -770,8 +797,7 @@ def addservices():
                 else:
                     return commonfile.Errormessage()
                         
-        else:
-            return msg 
+        
     except Exception as e :
         print("Exception---->" +str(e))           
         output = {"status":"false","message":"something went wrong","result":""}
@@ -940,7 +966,7 @@ def viewdoctorNotes():
 
 
 
-@app.route('/allservices', methods=['POST'])
+@app.route('/allservices', methods=['GET'])
 def allservices():
     try:
         
@@ -985,12 +1011,16 @@ def addqualification():
         g=len(unfilled_data)
         h={}
         if g>0:
-            h.update({i:""+str(i)+""+" is required"})
+            for i in unfilled_data:
+                h.update({i:""+str(i)+""+" is required"})
+            data={'status':'false','message':"Incomplete data",'result':h}
+            return data
+        else:
 
             
             
             column,values="",""
-            qualification=request.form['qualification']
+            qualification=commonfile.EscapeSpecialChar(request.form['qualification'])
            
             column22='*'
             WhereCondition = "  and  qualification = '" + str(qualification) + "' "
@@ -1019,19 +1049,27 @@ def addqualification():
                 else:
                     return commonfile.Errormessage()
                         
-        else:
-            return msg 
+       
     except Exception as e :
         print("Exception---->" +str(e))           
         output = {"status":"false","message":"something went wrong","result":""}
         return output
 
 
-@app.route('/allqualification', methods=['POST'])
+@app.route('/allqualification', methods=['GET'])
 def allqualification():
     try:
        
         startlimit,endlimit="",""
+      
+        
+        
+       
+       
+
+        
+
+
       
      
         column=  "qualification"
@@ -1044,6 +1082,7 @@ def allqualification():
             data['result']=res
 
             return data
+
       
 
                           
@@ -1051,7 +1090,7 @@ def allqualification():
         else:
             data={"status":"false","message":"No Qualification Exits","result":""}
             return data
-
+        
        
     except KeyError as e:
         print("Exception---->" +str(e))        
@@ -1069,16 +1108,18 @@ def allqualification():
 @app.route('/agedropdown', methods=['GET'])
 def agedropdown():
     try:
+       
+       
         
-        age=[]
-        for i in range(1,101):
-            age.append(i)
-        data={}
-        data['message']=""
-        data['result']=age
-        data['status']='true'
+            age=[]
+            for i in range(1,101):
+                age.append(i)
+            data={}
+            data['message']=""
+            data['result']=age
+            data['status']='true'
 
-        return data
+            return data
        
     except KeyError as e:
         print("Exception---->" +str(e))        
@@ -1103,9 +1144,10 @@ def agedropdown():
 
 
 if __name__ == "__main__":
+    CORS(app, support_credentials=True)
     app.permanent_session_lifetime = timedelta(minutes=3)
    
-    app.run(host='134.209.154.179',port=5028,debug=True)
+    app.run(host='0.0.0.0',port=5032,debug=True)
 
 
 
