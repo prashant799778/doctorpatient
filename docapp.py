@@ -204,8 +204,8 @@ def doctorlogin():
        
         if 'password' not in request.authorization:
             unfilled_data.append('password')
-        if 'userID' not in request.authorization:
-            unfilled_data.append('userID')
+        if 'username' not in request.authorization:
+            unfilled_data.append('username')
         
         g=len(unfilled_data)
         h={}
@@ -220,12 +220,12 @@ def doctorlogin():
      
         
         if g ==0:
-            userID = request.authorization["userID"]
+            username = request.authorization["username"]
             password=request.authorization['password']
             
            
             column=  "email,name,experience,speciality,previously,userID,password,age"
-            whereCondition= " and userID = '" + str(userID) + "'"
+            whereCondition= " and userID = '" + str(username) + "'"
             loginuser=databasefile.SelectQuery1("doctorMaster",column,whereCondition)
             
            
@@ -239,14 +239,14 @@ def doctorlogin():
                     
                     expires = datetime.timedelta(minutes=30)
                     access_token = create_access_token(identity=str(loginuser['result']['userID']), expires_delta=expires)
-                    whereCondition= " and  userID= '"+str(userID)+"'"
+                    whereCondition= " and  userID= '"+str(username)+"'"
                     column=" access_token='"+str(access_token)+"' " 
                     
                     
                     data=databasefile.UpdateQuery("doctorMaster",column,whereCondition)
 
                     column=  "userID,name,experience,age,previously,speciality,email,qualification,access_token as token,password"
-                    whereCondition= " and userID = '" + str(userID) + "' "
+                    whereCondition= " and userID = '" + str(username) + "' "
                     loginuser=databasefile.SelectQuery1("doctorMaster",column,whereCondition)
                     del loginuser['result']['password']
                     
@@ -589,8 +589,8 @@ def patientlogin():
        
         if 'password' not in request.authorization:
             unfilled_data.append('password')
-        if 'userID' not in request.authorization:
-            unfilled_data.append('userID')
+        if 'username' not in request.authorization:
+            unfilled_data.append('username')
         
         g=len(unfilled_data)
         h={}
@@ -605,7 +605,7 @@ def patientlogin():
      
         
         if g ==0:
-            userID = request.authorization["userID"]
+            userID = request.authorization["username"]
             password=request.authorization['password']
             column=  "*"
             whereCondition= " and userID = '" + str(userID) + "' "
