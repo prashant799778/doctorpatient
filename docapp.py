@@ -382,7 +382,7 @@ def doctorProfile():
                 
             
             whereCondition= " and access_token= '"+str(access_token[1])+"' "
-            column='userID,name,experience,age,previously,speciality,email,qualification,access_token as token'
+            column='userID,name,experience,age,previously,speciality,email,qualification'
 
             
          
