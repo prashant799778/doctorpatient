@@ -608,7 +608,7 @@ def patientlogin():
             userID =request.authorization["username"]
             password=request.authorization['password']
             column=  "*"
-            whereCondition= "and userID = '"+str(userID)+"'"
+            whereCondition= "and userID ='"+userID+"'"
             loginuser=databasefile.SelectQuery1("patientMaster",column,whereCondition)
             print(loginuser)
            
