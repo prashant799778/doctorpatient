@@ -167,7 +167,7 @@ def doctorSignup():
                     column=  "userID,name,experience,age,previously,speciality,email,qualification,access_token as token"
                     whereCondition= " and name = '" + str(name) + "' "
                     loginuser=databasefile.SelectQuery1("doctorMaster",column,whereCondition)
-                    del loginuser['result']['password']
+                   
                     
                     return {'result':loginuser['result'],"message":"","status":"true"}
                     
