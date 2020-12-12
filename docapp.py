@@ -225,7 +225,7 @@ def doctorlogin():
             
            
             column=  "email,name,experience,speciality,previously,userID,password,age"
-            whereCondition= " and userID = '"+str(username)+"'"
+            whereCondition= " and userID ='"+str(username)+"'"
             loginuser=databasefile.SelectQuery1("doctorMaster",column,whereCondition)
             
            
@@ -605,7 +605,7 @@ def patientlogin():
      
         
         if g ==0:
-            userID = request.authorization["username"]
+            userID =request.authorization["username"]
             password=request.authorization['password']
             column=  "*"
             whereCondition= "and userID = '"+str(userID)+"'"
