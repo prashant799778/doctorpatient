@@ -616,12 +616,18 @@ def patientlogin():
                     # token1={'token':token}
 
                     expires = datetime.timedelta(minutes=30)
+
                     access_token = create_access_token(identity=str(loginuser['result']['userID']), expires_delta=expires)
                     whereCondition= " and  name= '"+str(name)+"'"
                     column=" access_token='"+str(access_token)+"' " 
+                    
                     data=databasefile.UpdateQuery("patientMaster",column,whereCondition)
+                    column=  "*"
+                    whereCondition= " and name = '" + str(name) + "' "
+                    loginuser=databasefile.SelectQuery1("patientMaster",column,whereCondition)
                     del loginuser['result']['password']
-                    loginuser['result'].update({'token':access_token})
+                    
+                    
                     return {'result':loginuser['result'],"message":"","status":"true"}
                     
                     
