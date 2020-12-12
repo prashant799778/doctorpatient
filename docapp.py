@@ -245,7 +245,7 @@ def doctorlogin():
                     
                     data=databasefile.UpdateQuery("doctorMaster",column,whereCondition)
 
-                    column=  "userID,name,experience,age,previously,speciality,email,qualification,access_token as token"
+                    column=  "userID,name,experience,age,previously,speciality,email,qualification,access_token as token,password"
                     whereCondition= " and name = '" + str(name) + "' "
                     loginuser=databasefile.SelectQuery1("doctorMaster",column,whereCondition)
                     del loginuser['result']['password']
@@ -632,7 +632,7 @@ def patientlogin():
                     column=" access_token='"+str(access_token)+"' " 
                     
                     data=databasefile.UpdateQuery("patientMaster",column,whereCondition)
-                    column=  "name,userID,age,address,first,email,phoneNumber,gender,healthIssue,access_token  as token"
+                    column=  "name,userID,age,address,first,email,phoneNumber,gender,healthIssue,access_token  as token,password"
                     whereCondition= " and name = '" + str(name) + "' "
                     loginuser=databasefile.SelectQuery1("patientMaster",column,whereCondition)
                     del loginuser['result']['password']
