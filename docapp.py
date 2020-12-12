@@ -159,7 +159,7 @@ def doctorSignup():
 
 
 
-                    expires = datetime.timedelta(minutes=5)
+                    expires = datetime.timedelta(minutes=30)
                     access_token = create_access_token(identity=str(userID), expires_delta=expires)
                     whereCondition= " and  name= '"+str(name)+"'"
                     column=" access_token='"+str(access_token)+"' " 
@@ -232,7 +232,7 @@ def doctorlogin():
                     session.permanent = True
                     # token = PyJWT.encode({'userID': loginuser['result']['userID']},key= 'secret' , algorithm= 'RS256') 
                     
-                    expires = datetime.timedelta(minutes=5)
+                    expires = datetime.timedelta(minutes=30)
                     access_token = create_access_token(identity=str(loginuser['result']['userID']), expires_delta=expires)
                     whereCondition= " and  name= '"+str(name)+"'"
                     column=" access_token='"+str(access_token)+"' " 
@@ -539,7 +539,7 @@ def PatientSignup():
              
 
                 if data != "0":
-                    expires = datetime.timedelta(minutes=5)
+                    expires = datetime.timedelta(minutes=30)
                     access_token = create_access_token(identity=str(userID), expires_delta=expires)
                     whereCondition= " and  name= '"+str(name)+"'"
                     column=" access_token='"+str(access_token)+"' " 
@@ -605,7 +605,9 @@ def patientlogin():
            
             if loginuser['result'] and check_password_hash(loginuser['result']['password'], password):
 
+
                 print(loginuser['result'] and check_password_hash(loginuser['result']['password'], password))
+                
                 if (loginuser['status']!='false'):
                     session.permanent = True
                     # token = PyJWT.encode({'userID': loginuser['result']['userID']},key= 'secret' , algorithm= 'RS256')  
@@ -613,7 +615,7 @@ def patientlogin():
                     print(app.permanent_session_lifetime)
                     # token1={'token':token}
 
-                    expires = datetime.timedelta(minutes=5)
+                    expires = datetime.timedelta(minutes=30)
                     access_token = create_access_token(identity=str(loginuser['result']['userID']), expires_delta=expires)
                     whereCondition= " and  name= '"+str(name)+"'"
                     column=" access_token='"+str(access_token)+"' " 
