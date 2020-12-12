@@ -164,7 +164,7 @@ def doctorSignup():
                     whereCondition= " and  name= '"+str(name)+"'"
                     column=" access_token='"+str(access_token)+"' " 
                     data1=databasefile.UpdateQuery("doctorMaster",column,whereCondition)
-                    column=  "*"
+                    column=  "userID,name,experience,age,previously,speciality,email,qualification,access_token as token"
                     whereCondition= " and name = '" + str(name) + "' "
                     loginuser=databasefile.SelectQuery1("doctorMaster",column,whereCondition)
                     del loginuser['result']['password']
@@ -245,7 +245,7 @@ def doctorlogin():
                     
                     data=databasefile.UpdateQuery("doctorMaster",column,whereCondition)
 
-                    column=  "*"
+                    column=  "userID,name,experience,age,previously,speciality,email,qualification,access_token as token"
                     whereCondition= " and name = '" + str(name) + "' "
                     loginuser=databasefile.SelectQuery1("doctorMaster",column,whereCondition)
                     del loginuser['result']['password']
@@ -555,7 +555,7 @@ def PatientSignup():
                     column=" access_token='"+str(access_token)+"' " 
                     data=databasefile.UpdateQuery("patientMaster",column,whereCondition)
 
-                    column22='name,userID,age,address,first,email,phoneNumber,gender,healthIssue,access_token'
+                    column22='name,userID,age,address,first,email,phoneNumber,gender,healthIssue,access_token  as token'
                     
                     WhereCondition = "  and  userID = '" + str(userID) + "'and email= '" + str(email) + "' "
                     count = databasefile.SelectQuery1("patientMaster",column22,WhereCondition)
@@ -632,7 +632,7 @@ def patientlogin():
                     column=" access_token='"+str(access_token)+"' " 
                     
                     data=databasefile.UpdateQuery("patientMaster",column,whereCondition)
-                    column=  "*"
+                    column=  "name,userID,age,address,first,email,phoneNumber,gender,healthIssue,access_token  as token"
                     whereCondition= " and name = '" + str(name) + "' "
                     loginuser=databasefile.SelectQuery1("patientMaster",column,whereCondition)
                     del loginuser['result']['password']
