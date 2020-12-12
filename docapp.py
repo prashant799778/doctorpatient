@@ -781,7 +781,7 @@ def patientProfile():
                 
             
             whereCondition= " and access_token= '"+str(access_token[1])+"' "
-            column='name,userID,age,address,first,email,phoneNumber,gender,healthIssue,access_token  as token'
+            column='name,userID,age,address,first,email,phoneNumber,gender,healthIssue'
 
             
          
