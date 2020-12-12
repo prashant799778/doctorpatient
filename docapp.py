@@ -219,7 +219,7 @@ def doctorlogin():
             password=request.authorization['password']
             
            
-            column=  "email,name,experience,speciality,previously,userID,password"
+            column=  "email,name,experience,speciality,previously,userID,password,age"
             whereCondition= " and name = '" + str(name) + "'"
             loginuser=databasefile.SelectQuery1("doctorMaster",column,whereCondition)
             
@@ -236,9 +236,11 @@ def doctorlogin():
                     access_token = create_access_token(identity=str(loginuser['result']['userID']), expires_delta=expires)
                     whereCondition= " and  name= '"+str(name)+"'"
                     column=" access_token='"+str(access_token)+"' " 
+                    del loginuser['result']['password']
+                    loginuser['result'].update({'token':access_token})
                     data=databasefile.UpdateQuery("doctorMaster",column,whereCondition)
                     
-                    return {'result':{'token':access_token},"message":"","status":"true"}
+                    return {'result':loginuser['result'],"message":"","status":"true"}
                     
                    
               
@@ -616,7 +618,9 @@ def patientlogin():
                     whereCondition= " and  name= '"+str(name)+"'"
                     column=" access_token='"+str(access_token)+"' " 
                     data=databasefile.UpdateQuery("patientMaster",column,whereCondition)
-                    return {'result':{'token':access_token},"message":"","status":"true"}
+                    del loginuser['result']['password']
+                    loginuser['result'].update({'token':access_token})
+                    return {'result':loginuser['result'],"message":"","status":"true"}
                     
                     
 
