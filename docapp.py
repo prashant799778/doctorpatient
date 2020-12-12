@@ -164,8 +164,13 @@ def doctorSignup():
                     whereCondition= " and  name= '"+str(name)+"'"
                     column=" access_token='"+str(access_token)+"' " 
                     data1=databasefile.UpdateQuery("doctorMaster",column,whereCondition)
-                    data['result'].update({'token':access_token})
-                    return{'result':data['result'],'message':"","status":"true"}
+                    column=  "*"
+                    whereCondition= " and name = '" + str(name) + "' "
+                    loginuser=databasefile.SelectQuery1("doctorMaster",column,whereCondition)
+                    del loginuser['result']['password']
+                    
+                    return {'result':loginuser['result'],"message":"","status":"true"}
+                    
                     
                 else:
                     return commonfile.Errormessage()
@@ -236,9 +241,14 @@ def doctorlogin():
                     access_token = create_access_token(identity=str(loginuser['result']['userID']), expires_delta=expires)
                     whereCondition= " and  name= '"+str(name)+"'"
                     column=" access_token='"+str(access_token)+"' " 
-                    del loginuser['result']['password']
-                    loginuser['result'].update({'token':access_token})
+                    
+                    
                     data=databasefile.UpdateQuery("doctorMaster",column,whereCondition)
+
+                    column=  "*"
+                    whereCondition= " and name = '" + str(name) + "' "
+                    loginuser=databasefile.SelectQuery1("doctorMaster",column,whereCondition)
+                    del loginuser['result']['password']
                     
                     return {'result':loginuser['result'],"message":"","status":"true"}
                     
@@ -545,11 +555,11 @@ def PatientSignup():
                     column=" access_token='"+str(access_token)+"' " 
                     data=databasefile.UpdateQuery("patientMaster",column,whereCondition)
 
-                    column22='name,userID,age,address,first,email,phoneNumber,gender,healthIssue'
+                    column22='name,userID,age,address,first,email,phoneNumber,gender,healthIssue,access_token'
                     
                     WhereCondition = "  and  userID = '" + str(userID) + "'and email= '" + str(email) + "' "
                     count = databasefile.SelectQuery1("patientMaster",column22,WhereCondition)
-                    count['result'].update({'token':access_token})
+                    
                     return{'result':count['result'],'message':"","status":"true"}
                     
                
@@ -627,7 +637,7 @@ def patientlogin():
                     loginuser=databasefile.SelectQuery1("patientMaster",column,whereCondition)
                     del loginuser['result']['password']
                     
-                    
+
                     return {'result':loginuser['result'],"message":"","status":"true"}
                     
                     
