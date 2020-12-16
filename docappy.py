@@ -18,6 +18,7 @@ from flask import session
 from werkzeug.security import generate_password_hash, check_password_hash
 import jwt
 from flask_jwt_extended import create_access_token,JWTManager, jwt_required
+import bcrypt
 
 
 
@@ -28,6 +29,8 @@ from flask_jwt_extended import create_access_token,JWTManager, jwt_required
 from flask import Flask, render_template
 from flask_login import LoginManager, login_user, logout_user
 from jwt import PyJWT
+from sendgrid import SendGridAPIClient
+from sendgrid.helpers.mail import Mail
 
 
 app = Flask(__name__)
@@ -53,7 +56,7 @@ app.config['SECRET_KEY'] = 'secret!'
 def doctorSignup():
     try:
         unfilled_data=[]
-        keyarr = ['userID','name','password','email','qualification','age','experience','previously','speciality']
+        keyarr = ['name','password','email','qualification','age','experience','previously','speciality']
         for i in keyarr:
             if i not in request.form:
                 unfilled_data.append(i)
@@ -78,9 +81,24 @@ def doctorSignup():
             
             column,values="",""
 
-            userID=request.form['userID']
+            
+
             name=request.form["name"]
+
             email=request.form['email']
+            a=CreateHashKey(email,name).hex
+            userID=a[:8]
+            print(userID)
+            message = Mail(
+                from_email='manyypallive@gmail.com',
+                to_emails=str(email),
+                subject='DoctorSignup',
+                html_content='<strong>Hi,Welcome to our Organization,Your UserID is:"'+str(userID)+'"</strong>')
+            
+            sg = SendGridAPIClient('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')
+            response = sg.send(message)
+
+
             qualification=request.form["qualification"]
             password=request.form['password']
             password=generate_password_hash(password)
@@ -99,14 +117,14 @@ def doctorSignup():
             
             
             
-            column22='*'
+            column22='userID,name,experience,age,previously,speciality,email,qualification'
             
             WhereCondition = "  and  userID = '" + str(userID) + "' or email= '" + str(email) + "' "
             count = databasefile.SelectQuery1("doctorMaster",column22,WhereCondition)
             
             if count['status']!='false':
                 
-                data={"result":"","status":"false","message":"Already Registed through this email"}
+                data={"result":"","status":"false","message":"Already Registed through this email & userID"}
                 print(data)
                 return data
                 
@@ -151,12 +169,26 @@ def doctorSignup():
              
 
                 if data != "0":
-                    column = '*'
+                    column22='userID,name,experience,age,previously,speciality,email,qualification'
+            
+                    WhereCondition = "  and  userID = '" + str(userID) + "' and email= '" + str(email) + "' "
+                    data = databasefile.SelectQuery1("doctorMaster",column22,WhereCondition)
+
+
+
+                    expires = datetime.timedelta(minutes=30)
+                    access_token = create_access_token(identity=str(userID), expires_delta=expires)
+                    whereCondition= " and  name= '"+str(name)+"'"
+                    column=" access_token='"+str(access_token)+"' " 
+                    data1=databasefile.UpdateQuery("doctorMaster",column,whereCondition)
+                    column=  "userID,name,experience,age,previously,speciality,email,qualification,access_token as token"
+                    whereCondition= " and name = '" + str(name) + "' "
+                    loginuser=databasefile.SelectQuery1("doctorMaster",column,whereCondition)
+                   
                     
-                    data = databasefile.SelectQuery1("doctorMaster",column,WhereCondition)
-                    print(data)
-                    Data = {"status":"true","message":"","result":data["result"]}                  
-                    return Data
+                    return {'result':loginuser['result'],"message":"","status":"true"}
+                    
+                    
                 else:
                     return commonfile.Errormessage()
                         
@@ -205,27 +237,37 @@ def doctorlogin():
      
         
         if g ==0:
-            name = request.authorization["username"]
+            username = request.authorization["username"]
             password=request.authorization['password']
+            
            
-            column=  "email,name,experience,speciality,previously,userID,password"
-            whereCondition= " and name = '" + str(name) + "'"
+            column=  "email,name,experience,speciality,previously,userID,password,age"
+            whereCondition= " and userID ='"+str(username)+"'"
             loginuser=databasefile.SelectQuery1("doctorMaster",column,whereCondition)
+            
            
             if loginuser['result'] and check_password_hash(loginuser['result']['password'], password):
+
 
                 print(loginuser['result'] and check_password_hash(loginuser['result']['password'], password))
                 if (loginuser['status']!='false'):
                     session.permanent = True
                     # token = PyJWT.encode({'userID': loginuser['result']['userID']},key= 'secret' , algorithm= 'RS256') 
                     
-                    expires = datetime.timedelta(minutes=5)
+                    expires = datetime.timedelta(minutes=30)
                     access_token = create_access_token(identity=str(loginuser['result']['userID']), expires_delta=expires)
-                    whereCondition= " and  name= '"+str(name)+"'"
+                    whereCondition= " and  userID= '"+str(username)+"'"
                     column=" access_token='"+str(access_token)+"' " 
-                    data=databasefile.UpdateQuery("doctorMaster",column,whereCondition)
                     
-                    return {'result':{'token':access_token},"message":"","status":"true"}
+                    
+                    data=databasefile.UpdateQuery("doctorMaster",column,whereCondition)
+
+                    column=  "userID,name,experience,age,previously,speciality,email,qualification,access_token as token,password"
+                    whereCondition= " and userID = '" + str(username) + "' "
+                    loginuser=databasefile.SelectQuery1("doctorMaster",column,whereCondition)
+                    del loginuser['result']['password']
+                    
+                    return {'result':loginuser['result'],"message":"","status":"true"}
                     
                    
               
@@ -233,7 +275,7 @@ def doctorlogin():
                               
         
             else:
-                data={"status":"false","message":"Please enter correct Password & Email","result":""}
+                data={"status":"false","message":"Please enter correct Password & UserID","result":""}
                 return data
 
         else:
@@ -357,7 +399,7 @@ def doctorProfile():
                 
             
             whereCondition= " and access_token= '"+str(access_token[1])+"' "
-            column='*'
+            column='userID,name,experience,age,previously,speciality,email,qualification'
 
             
          
@@ -395,7 +437,7 @@ def PatientSignup():
 
         unfilled_data=[]
 
-        keyarr = ['userID','name','email','phoneNumber','gender','age','dob','address','pincode','first','healthIssue','password']
+        keyarr = ['name','email','phoneNumber','gender','age','dob','address','pincode','first','healthIssue','password']
         
         for i in keyarr:
             if i not in request.form:
@@ -422,13 +464,25 @@ def PatientSignup():
             for i in keyarr:
             
             
-                userID=request.form.get('userID')
+                
                 
 
                 name=request.form["name"]
             
                 
                 email=request.form['email']
+
+                a=CreateHashKey(email,name).hex
+                userID=a[:8]
+                print(userID)
+                message = Mail(
+                    from_email='manyypallive@gmail.com',
+                    to_emails=str(email),
+                    subject='PatientSignup',
+                    html_content='<strong>Hi,Welcome to our Organization,Your UserID is:"'+str(userID)+'"</strong>')
+                
+                sg = SendGridAPIClient('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')
+                response = sg.send(message)
                 phoneNumber=request.form["phoneNumber"]
 
                 password=request.form['password']
@@ -461,7 +515,7 @@ def PatientSignup():
             
             if count['status']!='false':
                 
-                data={"result":"","status":"false","message":"Already Registed through this email"}
+                data={"result":"","status":"false","message":"Already Registed through this email & userID"}
                 print(data)
                 return data
 
@@ -524,11 +578,20 @@ def PatientSignup():
              
 
                 if data != "0":
-                    column = column
-                    data = databasefile.SelectQuery1("patientMaster",column,WhereCondition)
-                    print(data)
-                    Data = {"status":"true","message":"","result":data["result"]}                  
-                    return Data
+                    expires = datetime.timedelta(minutes=30)
+                    access_token = create_access_token(identity=str(userID), expires_delta=expires)
+                    whereCondition= " and  name= '"+str(name)+"'"
+                    column=" access_token='"+str(access_token)+"' " 
+                    data=databasefile.UpdateQuery("patientMaster",column,whereCondition)
+
+                    column22='name,userID,age,address,first,email,phoneNumber,gender,healthIssue,access_token  as token'
+                    
+                    WhereCondition = "  and  userID = '" + str(userID) + "'and email= '" + str(email) + "' "
+                    count = databasefile.SelectQuery1("patientMaster",column22,WhereCondition)
+                    
+                    return{'result':count['result'],'message':"","status":"true"}
+                    
+               
                 else:
                     return commonfile.Errormessage()
                         
@@ -571,17 +634,20 @@ def patientlogin():
      
         
         if g ==0:
-            name = request.authorization["username"]
+            userID=request.authorization['username']
             password=request.authorization['password']
             column=  "*"
-            whereCondition= " and name = '" + str(name) + "' "
+            whereCondition= "and userID ='"+userID+"'"
             loginuser=databasefile.SelectQuery1("patientMaster",column,whereCondition)
+            print(loginuser)
            
            
            
             if loginuser['result'] and check_password_hash(loginuser['result']['password'], password):
 
+
                 print(loginuser['result'] and check_password_hash(loginuser['result']['password'], password))
+                
                 if (loginuser['status']!='false'):
                     session.permanent = True
                     # token = PyJWT.encode({'userID': loginuser['result']['userID']},key= 'secret' , algorithm= 'RS256')  
@@ -589,12 +655,20 @@ def patientlogin():
                     print(app.permanent_session_lifetime)
                     # token1={'token':token}
 
-                    expires = datetime.timedelta(minutes=5)
+                    expires = datetime.timedelta(minutes=30)
+
                     access_token = create_access_token(identity=str(loginuser['result']['userID']), expires_delta=expires)
-                    whereCondition= " and  name= '"+str(name)+"'"
+                    whereCondition= " and  userID= '"+str(userID)+"'"
                     column=" access_token='"+str(access_token)+"' " 
+                    
                     data=databasefile.UpdateQuery("patientMaster",column,whereCondition)
-                    return {'result':{'token':access_token},"message":"","status":"true"}
+                    column=  "name,userID,age,address,first,email,phoneNumber,gender,healthIssue,access_token  as token,password"
+                    whereCondition= " and userID = '" + str(userID) + "' "
+                    loginuser=databasefile.SelectQuery1("patientMaster",column,whereCondition)
+                    del loginuser['result']['password']
+                    
+
+                    return {'result':loginuser['result'],"message":"","status":"true"}
                     
                     
 
@@ -603,7 +677,7 @@ def patientlogin():
                               
         
             else:
-                data={"status":"false","message":"Please enter correct Password & Email","result":""}
+                data={"status":"false","message":"Please enter correct Password & UserID","result":""}
                 return data
 
         else:
@@ -737,7 +811,7 @@ def patientProfile():
                 
             
             whereCondition= " and access_token= '"+str(access_token[1])+"' "
-            column='*'
+            column='name,userID,age,address,first,email,phoneNumber,gender,healthIssue'
 
             
          
